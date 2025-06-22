@@ -20,10 +20,7 @@ export class CreateMemberDto {
   // })
   telephone: string;
 
-  @IsString()
-  @IsOptional()
-  email?: string;
-
+  
   @IsString()
   @IsNotEmpty()
   qualiteMembre: string;

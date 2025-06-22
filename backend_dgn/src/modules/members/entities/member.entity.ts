@@ -8,7 +8,7 @@ import {
 
 @Entity("members")
 export class Member {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn()
   id: string;
 
   @Column()
@@ -29,12 +29,8 @@ export class Member {
   @Column()
   adresse: string;
 
-  @Column()
+  @Column({ nullable: true, unique: true })
   telephone: string;
-
-  @Column()
-  @Column({ nullable: true })
-  email: string;
 
   @Column({ nullable: true })
   photo: string;

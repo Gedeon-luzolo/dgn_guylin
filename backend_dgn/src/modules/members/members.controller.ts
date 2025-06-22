@@ -8,19 +8,26 @@ import {
   Param,
   Post,
   Put,
+  UploadedFile,
+  UseInterceptors,
 } from "@nestjs/common";
 import { MembersService } from "./members.service";
 import { CreateMemberDto } from "./dto/create-member.dto";
 import { Member } from "./entities/member.entity";
+import { PhotoFileInterceptor } from "src/common/interceptors/file.interceptor";
 
-@Controller("members")
+@Controller("api/members")
 export class MembersController {
   constructor(private readonly membersService: MembersService) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() createMemberDto: CreateMemberDto): Promise<Member> {
-    return this.membersService.create(createMemberDto);
+  @UseInterceptors(PhotoFileInterceptor)
+  create(
+    @Body() createMemberDto: CreateMemberDto,
+    @UploadedFile() photo?: Express.Multer.File
+  ) {
+    return this.membersService.create(createMemberDto, photo);
   }
 
   @Get()
@@ -34,11 +41,13 @@ export class MembersController {
   }
 
   @Put(":id")
+  @UseInterceptors(PhotoFileInterceptor)
   update(
     @Param("id") id: string,
-    @Body() updateMemberDto: CreateMemberDto
+    @Body() updateMemberDto: CreateMemberDto,
+    @UploadedFile() photo?: Express.Multer.File
   ): Promise<Member> {
-    return this.membersService.update(id, updateMemberDto);
+    return this.membersService.update(id, updateMemberDto, photo);
   }
 
   @Delete(":id")

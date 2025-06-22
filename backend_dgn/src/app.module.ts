@@ -3,12 +3,17 @@ import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AppController } from "./app.controller";
 import { AppService } from "./app.service";
-import { AdhesionModule } from "./adhesion/adhesion.module";
-import { MembersModule } from './members/members.module';
+import { NewsModule } from "./modules/news/news.module";
+import { ServeStaticModule } from "@nestjs/serve-static";
+import { join } from "path";
+import { AdhesionModule } from "./modules/adhesion/adhesion.module";
+import { MembersModule } from "./modules/members/members.module";
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      isGlobal: true,
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
@@ -26,8 +31,13 @@ import { MembersModule } from './members/members.module';
       },
       inject: [ConfigService],
     }),
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "uploads"),
+      serveRoot: "/uploads",
+    }),
     AdhesionModule,
     MembersModule,
+    NewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
