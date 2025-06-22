@@ -1,5 +1,5 @@
 export interface IMember {
-  id: string;
+  id?: string;
   nom: string;
   postNom: string;
   prenom: string;

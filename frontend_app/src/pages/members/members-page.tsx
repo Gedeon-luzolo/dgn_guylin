@@ -38,7 +38,7 @@ export const MembersPage = () => {
 
   const confirmDelete = async () => {
     if (memberToDelete) {
-      await deleteMutation.mutateAsync(memberToDelete.id);
+      await deleteMutation.mutate(memberToDelete.id as string);
       setMemberToDelete(null);
     }
   };
