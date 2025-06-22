@@ -1,8 +1,11 @@
-import { lazy, Suspense } from "react";
-import type { RouteObject } from "react-router-dom";
-import { PageLoader } from "@/components/loader/pageLoader";
 import { AdhesionPage } from "@/pages/adhesion/adhesion-page";
 import { ArticlePage } from "@/pages/news/article/article-page";
+import { NotFoundPage } from "@/pages/not-found/not-found-page";
+import { HomePage } from "@/pages/home/home";
+import { MembersPage } from "@/pages/members/members-page";
+import { ApplicationsPage } from "@/pages/applications/applications-page";
+import { NewsPage } from "@/pages/news/news-page";
+import { CommuniquesPage } from "@/pages/communiques/communiques-page";
 
 // Types
 export interface CustomRouteObject {
@@ -12,103 +15,54 @@ export interface CustomRouteObject {
   element: React.ReactNode;
 }
 
-// Lazy loading des pages avec gestion des erreurs TypeScript
-const HomePage = lazy(() =>
-  import("../pages/home/home").then((module) => ({
-    default: module.HomePage,
-  }))
-);
-const NewsPage = lazy(() =>
-  import("../pages/news/news-page").then((module) => ({
-    default: module.NewsPage,
-  }))
-);
-const CommuniquesPage = lazy(() =>
-  import("../pages/communiques/communiques-page").then((module) => ({
-    default: module.CommuniquesPage,
-  }))
-);
-const ApplicationsPage = lazy(() =>
-  import("../pages/applications/applications-page").then((module) => ({
-    default: module.ApplicationsPage,
-  }))
-);
-const NotFoundPage = lazy(() =>
-  import("../pages/not-found/not-found-page").then((module) => ({
-    default: module.NotFoundPage,
-  }))
-);
-
 // Configuration des routes
-export const routes: (CustomRouteObject & RouteObject)[] = [
+export const routes = [
   {
     path: "/",
     title: "Accueil",
     description: "Bienvenue sur le site des Dynamiques Guylin Nyembo",
-    element: (
-      <Suspense fallback={<PageLoader />}>
-        <HomePage />
-      </Suspense>
-    ),
+    element: <HomePage />,
   },
   {
     path: "/actualites",
     title: "Actualités",
     description: "Restez informé des dernières actualités",
-    element: (
-      <Suspense fallback={<PageLoader />}>
-        <NewsPage />
-      </Suspense>
-    ),
+    element: <NewsPage />,
   },
   {
     path: "/actualites/:id",
     title: "Article",
     description: "Lecture d'article",
-    element: (
-      <Suspense fallback={<PageLoader />}>
-        <ArticlePage />
-      </Suspense>
-    ),
+    element: <ArticlePage />,
   },
   {
     path: "/communiques",
     title: "Communiqués",
     description: "Consultez nos communiqués officiels",
-    element: (
-      <Suspense fallback={<PageLoader />}>
-        <CommuniquesPage />
-      </Suspense>
-    ),
+    element: <CommuniquesPage />,
   },
   {
     path: "/applications",
     title: "Nos Applications",
     description: "Découvrez nos applications et services",
-    element: (
-      <Suspense fallback={<PageLoader />}>
-        <ApplicationsPage />
-      </Suspense>
-    ),
+    element: <ApplicationsPage />,
+  },
+  {
+    path: "/members",
+    title: "",
+    description: "",
+    element: <MembersPage />,
   },
   {
     path: "/adhesion",
     title: "",
     description: "",
-    element: (
-      <Suspense fallback={<PageLoader />}>
-        <AdhesionPage />
-      </Suspense>
-    ),
+    element: <AdhesionPage />,
   },
   {
     path: "*",
     title: "Page non trouvée",
-    element: (
-      <Suspense fallback={<PageLoader />}>
-        <NotFoundPage />
-      </Suspense>
-    ),
+    element: <NotFoundPage />,
   },
 ];
 

@@ -9,7 +9,7 @@ export const applications: Application[] = [
     id: "adhesion",
     title: "ADHÉSION ET RENOUVELLEMENT",
 
-    link: "/adhesion",
+    link: "/members",
   },
   {
     id: "documents",

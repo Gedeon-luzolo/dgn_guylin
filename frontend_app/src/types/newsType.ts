@@ -1,24 +1,24 @@
+import type { IMember } from "./memberType";
+
 export interface NewsImage {
+  id: string;
   url: string;
   alt?: string;
   caption?: string;
+  isMain: boolean;
 }
 
 export interface NewsArticle {
   id: string;
   title: string;
   content: string;
-  mainImage: NewsImage;
-  images: NewsImage[];
   category: string;
-  author: {
-    name: string;
-    avatar?: string;
-  };
-  date: string;
+  author: IMember;
+  images: NewsImage[];
+  likes: number;
   commentsCount: number;
-  likes?: number;
-  readTime?: string;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export const newsCatecory = [
