@@ -9,17 +9,11 @@ import { useNavigate } from "react-router-dom";
 
 export const AdhesionPage: React.FC = () => {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState<IMember>({
-    nom: "",
-    postNom: "",
-    prenom: "",
-    qualiteMembre: "",
-    province: "",
-    adresse: "",
+  const setFormData = useState<{
+    photo: File | null;
+  }>({
     photo: null,
-    email: "",
-    telephone: "",
-  });
+  })[1];
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
@@ -32,14 +26,6 @@ export const AdhesionPage: React.FC = () => {
 
   const createMutation = useCreate();
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
-  };
-
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (file) {
@@ -47,17 +33,13 @@ export const AdhesionPage: React.FC = () => {
         ...prev,
         photo: file,
       }));
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setPreviewImage(reader.result as string);
-      };
-      reader.readAsDataURL(file);
+      setPreviewImage(URL.createObjectURL(file));
     }
   };
 
   const handleSubmit = async (formData: FormData) => {
     await createMutation.mutateAsync(formData);
-    navigate("/membres"); // Rediriger vers la liste des membres après l'enregistrement
+    navigate("/members");
   };
 
   return (
@@ -80,8 +62,6 @@ export const AdhesionPage: React.FC = () => {
                     type="text"
                     id="nom"
                     name="nom"
-                    value={formData.nom}
-                    onChange={handleInputChange}
                     className="border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl"
                     required
                   />
@@ -96,8 +76,6 @@ export const AdhesionPage: React.FC = () => {
                     type="text"
                     id="postNom"
                     name="postNom"
-                    value={formData.postNom}
-                    onChange={handleInputChange}
                     className="border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl"
                     required
                   />
@@ -112,8 +90,6 @@ export const AdhesionPage: React.FC = () => {
                     type="text"
                     id="prenom"
                     name="prenom"
-                    value={formData.prenom}
-                    onChange={handleInputChange}
                     className="border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl"
                     required
                   />
@@ -128,8 +104,6 @@ export const AdhesionPage: React.FC = () => {
                     type="text"
                     id="qualiteMembre"
                     name="qualiteMembre"
-                    value={formData.qualiteMembre}
-                    onChange={handleInputChange}
                     className="border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl"
                     required
                   />
@@ -144,8 +118,6 @@ export const AdhesionPage: React.FC = () => {
                     type="number"
                     id="telephone"
                     name="telephone"
-                    value={formData.telephone}
-                    onChange={handleInputChange}
                     className="border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl"
                   />
                 </div>
@@ -159,8 +131,6 @@ export const AdhesionPage: React.FC = () => {
                     type="text"
                     id="province"
                     name="province"
-                    value={formData.province}
-                    onChange={handleInputChange}
                     className="border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl"
                     required
                   />
@@ -175,8 +145,6 @@ export const AdhesionPage: React.FC = () => {
                     type="text"
                     id="adresse"
                     name="adresse"
-                    value={formData.adresse}
-                    onChange={handleInputChange}
                     className="border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl"
                     required
                   />
