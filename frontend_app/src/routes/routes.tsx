@@ -2,6 +2,7 @@ import { lazy, Suspense } from "react";
 import type { RouteObject } from "react-router-dom";
 import { PageLoader } from "@/components/loader/pageLoader";
 import { AdhesionPage } from "@/pages/adhesion/adhesion-page";
+import { ArticlePage } from "@/pages/news/article/article-page";
 
 // Types
 export interface CustomRouteObject {
@@ -57,6 +58,16 @@ export const routes: (CustomRouteObject & RouteObject)[] = [
     element: (
       <Suspense fallback={<PageLoader />}>
         <NewsPage />
+      </Suspense>
+    ),
+  },
+  {
+    path: "/actualites/:id",
+    title: "Article",
+    description: "Lecture d'article",
+    element: (
+      <Suspense fallback={<PageLoader />}>
+        <ArticlePage />
       </Suspense>
     ),
   },

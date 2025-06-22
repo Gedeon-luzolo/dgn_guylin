@@ -6,21 +6,11 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { toPng } from "html-to-image";
-
-interface FormData {
-  nom: string;
-  postNom: string;
-  prenom: string;
-  qualiteMembre: string;
-  province: string;
-  adresse: string;
-  email: string;
-  telephone: string;
-  photo: File | null;
-}
+import { useCrud } from "@/hooks/useCrud";
+import type { IMember } from "@/types/memberType";
 
 export const AdhesionPage: React.FC = () => {
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<IMember>({
     nom: "",
     postNom: "",
     prenom: "",
@@ -31,6 +21,15 @@ export const AdhesionPage: React.FC = () => {
     email: "",
     telephone: "",
   });
+
+  const { useCreate } = useCrud<IMember>({
+    endpoint: "/members",
+    queryKey: "members",
+    message: "Membre",
+    contentType: "multipart/form-data",
+  });
+
+  const createMutation = useCreate();
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
   const [showCard, setShowCard] = useState(false);
@@ -60,8 +59,8 @@ export const AdhesionPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
+  const handleSubmit = (formData: FormData) => {
+    createMutation.mutate(formData);
     setShowCard(true);
   };
 
@@ -95,7 +94,7 @@ export const AdhesionPage: React.FC = () => {
 
         <Card className="bg-white/10 backdrop-blur-lg border-white/20">
           <CardContent className="px-8">
-            <form onSubmit={handleSubmit} className="space-y-6">
+            <form action={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Nom */}
                 <div className="space-y-2">
@@ -161,6 +160,20 @@ export const AdhesionPage: React.FC = () => {
                   />
                 </div>
 
+                {/* Telephone */}
+                <div className="space-y-2">
+                  <Label htmlFor="telephone " className="text-white">
+                    Telephone :
+                  </Label>
+                  <Input
+                    type="number"
+                    id="telephone"
+                    name="telephone"
+                    value={formData.telephone}
+                    onChange={handleInputChange}
+                    className="border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl"
+                  />
+                </div>
                 {/* Province */}
                 <div className="space-y-2">
                   <Label htmlFor="province" className="text-white">

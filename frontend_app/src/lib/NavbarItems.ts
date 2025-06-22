@@ -10,7 +10,7 @@ export const NavbarItems: NavItem[] = [
   },
   {
     name: "ACTUALITÉS",
-    link: "/news",
+    link: "/actualites",
   },
   {
     name: "COMMUNIQUÉS",
