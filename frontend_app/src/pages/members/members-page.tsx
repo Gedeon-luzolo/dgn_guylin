@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -9,7 +9,10 @@ import { getImageUrl } from "@/lib/genFuction";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { provinces } from "@/lib/provinceRdc";
 import { Link } from "react-router-dom";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Pencil, Trash2, IdCard } from "lucide-react";
+import { Modal } from "@/components/ui/modal";
+import { MemberCard } from "@/components/member-card/member-card";
+import { toPng } from "html-to-image";
 import {
   Tooltip,
   TooltipContent,
@@ -22,6 +25,10 @@ export const MembersPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedProvince, setSelectedProvince] = useState<string>("all");
   const [memberToDelete, setMemberToDelete] = useState<IMember | null>(null);
+  const [showCard, setShowCard] = useState(false);
+  const [selectedMember, setSelectedMember] = useState<IMember | null>(null);
+  const [isCapturing, setIsCapturing] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   const { useList, useDelete } = useCrud<IMember>({
     endpoint: "/members",
@@ -40,6 +47,32 @@ export const MembersPage = () => {
     if (memberToDelete) {
       await deleteMutation.mutate(memberToDelete.id as string);
       setMemberToDelete(null);
+    }
+  };
+
+  const handleShowCard = (member: IMember) => {
+    setSelectedMember(member);
+    setShowCard(true);
+  };
+
+  const handleDownload = async () => {
+    if (cardRef.current && !isCapturing) {
+      setIsCapturing(true);
+      try {
+        const dataUrl = await toPng(cardRef.current, {
+          cacheBust: true,
+          pixelRatio: 2,
+        });
+
+        const link = document.createElement("a");
+        link.download = `Carte_Membre_${selectedMember?.nom}_${selectedMember?.postNom}.png`;
+        link.href = dataUrl;
+        link.click();
+      } catch (error) {
+        console.error("Erreur lors de la capture:", error);
+      } finally {
+        setIsCapturing(false);
+      }
     }
   };
 
@@ -173,15 +206,13 @@ export const MembersPage = () => {
                           variant="ghost"
                           size="icon"
                           className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-100"
-                          onClick={() => {
-                            // TODO: Implémenter la vue détaillée
-                          }}
+                          onClick={() => handleShowCard(member)}
                         >
-                          <Eye className="h-4 w-4" />
+                          <IdCard className="h-4 w-4" />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
-                        <p>Voir les détails</p>
+                        <p>Voir la carte de membre</p>
                       </TooltipContent>
                     </Tooltip>
 
@@ -224,6 +255,40 @@ export const MembersPage = () => {
             </Card>
           ))}
         </div>
+
+        {/* Modal pour la carte de membre */}
+        <Modal
+          isOpen={showCard}
+          onClose={() => setShowCard(false)}
+          title="CARTE DE MEMBRE"
+        >
+          <div className="space-y-8">
+            <div ref={cardRef} className="p-4 rounded-lg">
+              {selectedMember && (
+                <MemberCard
+                  memberData={{
+                    ...selectedMember,
+                    photo: selectedMember.photo
+                      ? getImageUrl(selectedMember.photo as string)
+                      : null,
+                  }}
+                />
+              )}
+            </div>
+            <div className="flex flex-col items-center space-y-4">
+              <Button
+                onClick={handleDownload}
+                disabled={isCapturing}
+                className="bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-3 px-8 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2"
+              >
+                <span>{isCapturing ? "⏳" : "⬇️"}</span>
+                <span>
+                  {isCapturing ? "Capture en cours..." : "Télécharger en PNG"}
+                </span>
+              </Button>
+            </div>
+          </div>
+        </Modal>
 
         {filteredMembers.length === 0 && (
           <div className="text-center py-12">

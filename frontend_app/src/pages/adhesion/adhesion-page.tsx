@@ -1,15 +1,14 @@
-import React, { useState, useRef } from "react";
+import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { MemberCard } from "@/components/member-card/member-card";
-import { Modal } from "@/components/ui/modal";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
-import { toPng } from "html-to-image";
 import { useCrud } from "@/hooks/useCrud";
 import type { IMember } from "@/types/memberType";
+import { useNavigate } from "react-router-dom";
 
 export const AdhesionPage: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<IMember>({
     nom: "",
     postNom: "",
@@ -22,6 +21,8 @@ export const AdhesionPage: React.FC = () => {
     telephone: "",
   });
 
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
+
   const { useCreate } = useCrud<IMember>({
     endpoint: "/members",
     queryKey: "members",
@@ -30,11 +31,6 @@ export const AdhesionPage: React.FC = () => {
   });
 
   const createMutation = useCreate();
-
-  const [previewImage, setPreviewImage] = useState<string | null>(null);
-  const [showCard, setShowCard] = useState(false);
-  const cardRef = useRef<HTMLDivElement>(null);
-  const [isCapturing, setIsCapturing] = useState(false);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -59,30 +55,9 @@ export const AdhesionPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = (formData: FormData) => {
-    createMutation.mutate(formData);
-    setShowCard(true);
-  };
-
-  const handleDownload = async () => {
-    if (cardRef.current && !isCapturing) {
-      setIsCapturing(true);
-      try {
-        const dataUrl = await toPng(cardRef.current, {
-          cacheBust: true,
-          pixelRatio: 2,
-        });
-
-        const link = document.createElement("a");
-        link.download = `Carte_Membre_${formData.nom}_${formData.postNom}.png`;
-        link.href = dataUrl;
-        link.click();
-      } catch (error) {
-        console.error("Erreur lors de la capture:", error);
-      } finally {
-        setIsCapturing(false);
-      }
-    }
+  const handleSubmit = async (formData: FormData) => {
+    await createMutation.mutateAsync(formData);
+    navigate("/membres"); // Rediriger vers la liste des membres après l'enregistrement
   };
 
   return (
@@ -162,8 +137,8 @@ export const AdhesionPage: React.FC = () => {
 
                 {/* Telephone */}
                 <div className="space-y-2">
-                  <Label htmlFor="telephone " className="text-white">
-                    Telephone :
+                  <Label htmlFor="telephone" className="text-white">
+                    Telephone:
                   </Label>
                   <Input
                     type="number"
@@ -174,6 +149,7 @@ export const AdhesionPage: React.FC = () => {
                     className="border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl"
                   />
                 </div>
+
                 {/* Province */}
                 <div className="space-y-2">
                   <Label htmlFor="province" className="text-white">
@@ -268,36 +244,6 @@ export const AdhesionPage: React.FC = () => {
           </CardContent>
         </Card>
       </div>
-
-      {/* Modal pour la prévisualisation de la carte */}
-      <Modal
-        isOpen={showCard}
-        onClose={() => setShowCard(false)}
-        title="TELECHARGEZ LA CARTE"
-      >
-        <div className="space-y-8">
-          <div ref={cardRef} className="p-4 rounded-lg">
-            <MemberCard
-              memberData={{
-                ...formData,
-                photo: previewImage,
-              }}
-            />
-          </div>
-          <div className="flex flex-col items-center space-y-4">
-            <Button
-              onClick={handleDownload}
-              disabled={isCapturing}
-              className="bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-3 px-8 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2"
-            >
-              <span>{isCapturing ? "⏳" : "⬇️"}</span>
-              <span>
-                {isCapturing ? "Capture en cours..." : "Télécharger en PNG"}
-              </span>
-            </Button>
-          </div>
-        </div>
-      </Modal>
     </div>
   );
 };
