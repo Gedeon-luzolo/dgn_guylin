@@ -73,7 +73,7 @@ export const Carousel: React.FC<CarouselProps> = ({
   return (
     <div
       className={cn(
-        "relative h-[90vh] md:h-[600px] w-full overflow-hidden",
+        "relative h-screen md:h-[700px] w-full overflow-hidden",
         className
       )}
     >
