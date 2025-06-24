@@ -1,4 +1,4 @@
-import { Module } from "@nestjs/common";
+import { Module, OnApplicationBootstrap } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AppController } from "./app.controller";
@@ -8,6 +8,8 @@ import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
 import { AdhesionModule } from "./modules/adhesion/adhesion.module";
 import { MembersModule } from "./modules/members/members.module";
+import { SeederModule } from "./database/seeders/seeder.module";
+import { AdminSeeder } from "./database/seeders/admin.seeder";
 
 @Module({
   imports: [
@@ -35,11 +37,19 @@ import { MembersModule } from "./modules/members/members.module";
       rootPath: join(__dirname, "..", "uploads"),
       serveRoot: "/uploads",
     }),
+    SeederModule,
     AdhesionModule,
+    SeederModule,
     MembersModule,
     NewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
-export class AppModule {}
+export class AppModule implements OnApplicationBootstrap {
+  constructor(private adminSeeder: AdminSeeder) {}
+
+  async onApplicationBootstrap() {
+    await this.adminSeeder.seed();
+  }
+}

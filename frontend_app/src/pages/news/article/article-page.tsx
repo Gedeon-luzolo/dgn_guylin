@@ -3,51 +3,9 @@ import { Button } from "@/components/ui/button";
 import type { NewsArticle, NewsImage } from "@/types/newsType";
 import { useParams } from "react-router-dom";
 import { useState } from "react";
-
-// Cette fonction sera remplacée par un appel API réel plus tard
-const getArticleById = (_id: string): NewsArticle => {
-  return {
-    id: "1",
-    title: "How to Spend the Perfect Day on Croatia's Most Magical Island",
-    content: `
-      Upon arrival, your senses will be rewarded with the pleasant scent of lemongrass oil used to clean the natural wood found throughout the room, creating a relaxing atmosphere within the space.
-
-      The island's pristine beaches stretch as far as the eye can see, with crystal-clear waters gently lapping at the shore. Local fishing boats dot the horizon, their colorful hulls creating a picturesque scene against the azure sky.
-
-      In the heart of the old town, centuries-old stone buildings tell stories of a rich maritime history. Narrow cobblestone streets wind their way through the village, each turn revealing charming cafes and artisanal shops selling local crafts.
-
-      As the sun begins to set, the sky transforms into a canvas of vibrant colors, casting a golden glow over the ancient walls and terracotta roofs. This is the perfect time to find a cozy spot at one of the seaside restaurants, where you can savor fresh seafood caught just hours before.
-
-      The evening brings a different kind of magic, as the town comes alive with the soft glow of street lamps and the gentle murmur of conversation from outdoor dining areas. Local musicians often gather in the main square, their traditional melodies floating through the warm Mediterranean air.
-    `,
-    mainImage: {
-      url: "/src/assets/images/carousel/guylin1.png",
-      alt: "Vue principale de l'île",
-      caption: "L'île magique de Croatie sous son plus beau jour",
-    },
-    images: [
-      {
-        url: "/src/assets/images/carousel/guylin2.png",
-        alt: "Plage paradisiaque",
-        caption: "Les eaux cristallines bordent les plages de sable fin",
-      },
-      {
-        url: "/src/assets/images/carousel/guylin3.png",
-        alt: "Ville historique",
-        caption: "Les ruelles pittoresques de la vieille ville",
-      },
-    ],
-    category: "Voyage",
-    author: {
-      name: "James Wilson",
-      avatar: "/src/assets/images/carousel/guylin2.png",
-    },
-    date: "14 Juillet 2022",
-    commentsCount: 35,
-    likes: 127,
-    readTime: "5 min",
-  };
-};
+import { useCrud } from "@/hooks/useCrud";
+import LoadingSpinner from "@/components/loader/LoadingSpinner";
+import { getImageUrl, formatDate } from "@/lib/genFuction";
 
 const ImageGallery = ({ images }: { images: NewsImage[] }) => {
   const [selectedImage, setSelectedImage] = useState<NewsImage | null>(null);
@@ -62,8 +20,8 @@ const ImageGallery = ({ images }: { images: NewsImage[] }) => {
             onClick={() => setSelectedImage(image)}
           >
             <img
-              src={image.url}
-              alt={image.alt}
+              src={getImageUrl(image.url)}
+              alt={image.alt || "Image"}
               className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
             />
             {image.caption && (
@@ -83,8 +41,8 @@ const ImageGallery = ({ images }: { images: NewsImage[] }) => {
         >
           <div className="relative max-w-7xl w-full">
             <img
-              src={selectedImage.url}
-              alt={selectedImage.alt}
+              src={getImageUrl(selectedImage.url)}
+              alt={selectedImage.alt || "Image"}
               className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
             />
             {selectedImage.caption && (
@@ -122,24 +80,69 @@ const ImageGallery = ({ images }: { images: NewsImage[] }) => {
 };
 
 export const ArticlePage = () => {
-  const { id } = useParams<{ id: string }>();
-  const article = getArticleById(id || "1");
+  const { id } = useParams();
+
+  const { useGet } = useCrud<NewsArticle>({
+    endpoint: "/news",
+    queryKey: "news",
+    idField: "id",
+    message: "article",
+  });
+
+  const { data: article, isLoading, isError } = useGet(id as string);
+
+  // Fonction pour obtenir l'image principale
+  const getMainImage = (images: NewsImage[]): NewsImage | undefined => {
+    return images.find((img) => img.isMain);
+  };
+
+  // Fonction pour obtenir les images non principales
+  const getGalleryImages = (images: NewsImage[]): NewsImage[] => {
+    return images.filter((img) => !img.isMain);
+  };
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center min-h-screen">
+        <LoadingSpinner />
+      </div>
+    );
+  }
+
+  if (isError || !article) {
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 flex items-center justify-center">
+        <div className="text-center text-red-500 dark:text-red-400 p-4">
+          <p>Erreur lors du chargement de l'article</p>
+        </div>
+      </div>
+    );
+  }
+
+  const mainImage = getMainImage(article.images);
+  const galleryImages = getGalleryImages(article.images);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800">
       {/* Hero Image */}
       <div className="relative h-[80vh] w-full">
         <div className="absolute inset-0">
-          <img
-            src={article.mainImage.url}
-            alt={article.mainImage.alt}
-            className="w-full h-full object-cover"
-          />
-          <div className="absolute inset-0 bg-black/30" />
-          {article.mainImage.caption && (
-            <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-4 text-white text-center">
-              {article.mainImage.caption}
-            </div>
+          {mainImage ? (
+            <>
+              <img
+                src={getImageUrl(mainImage.url)}
+                alt={mainImage.alt || article.title}
+                className="w-full h-full object-cover"
+              />
+              <div className="absolute inset-0 bg-black/30" />
+              {mainImage.caption && (
+                <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-4 text-white text-center">
+                  {mainImage.caption}
+                </div>
+              )}
+            </>
+          ) : (
+            <div className="w-full h-full bg-gradient-to-br from-blue-600 to-indigo-800" />
           )}
         </div>
         <div className="absolute inset-0 flex items-end">
@@ -149,9 +152,6 @@ export const ArticlePage = () => {
                 <span className="px-3 py-1 rounded-full text-sm font-medium bg-blue-100/90 text-blue-900">
                   {article.category}
                 </span>
-                <span className="text-sm text-white/90">
-                  {article.readTime}
-                </span>
               </div>
               <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
                 {article.title}
@@ -159,18 +159,25 @@ export const ArticlePage = () => {
               <div className="flex items-center gap-4">
                 <Avatar className="w-12 h-12 border-2 border-white/20">
                   <AvatarImage
-                    src={article.author.avatar}
-                    alt={article.author.name}
+                    src={
+                      article.author.photo
+                        ? getImageUrl(article.author.photo as unknown as string)
+                        : undefined
+                    }
+                    alt={`${article.author.prenom} ${article.author.nom}`}
                   />
                   <AvatarFallback>
-                    {article.author.name.charAt(0)}
+                    {article.author.prenom[0]}
+                    {article.author.nom[0]}
                   </AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="font-medium text-white">
-                    {article.author.name}
+                    {article.author.prenom} {article.author.nom}
                   </p>
-                  <p className="text-sm text-white/80">{article.date}</p>
+                  <p className="text-sm text-white/80">
+                    {formatDate(article.createdAt)}
+                  </p>
                 </div>
               </div>
             </div>
@@ -190,12 +197,12 @@ export const ArticlePage = () => {
           </div>
 
           {/* Image Gallery */}
-          {article.images.length > 0 && (
+          {galleryImages.length > 0 && (
             <>
               <h2 className="text-2xl font-bold text-gray-900 dark:text-white mt-12 mb-6">
                 Galerie d'images
               </h2>
-              <ImageGallery images={article.images} />
+              <ImageGallery images={galleryImages} />
             </>
           )}
 

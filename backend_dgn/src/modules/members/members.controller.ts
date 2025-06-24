@@ -15,14 +15,20 @@ import { MembersService } from "./members.service";
 import { CreateMemberDto } from "./dto/create-member.dto";
 import { Member } from "./entities/member.entity";
 import { PhotoFileInterceptor } from "src/common/interceptors/file.interceptor";
+import { FileInterceptor } from "@nestjs/platform-express";
+import { multerConfig } from "../../config/multer.config";
+import { AdminSeeder } from "../../database/seeders/admin.seeder";
 
 @Controller("api/members")
 export class MembersController {
-  constructor(private readonly membersService: MembersService) {}
+  constructor(
+    private readonly membersService: MembersService,
+    private readonly adminSeeder: AdminSeeder
+  ) {}
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  @UseInterceptors(PhotoFileInterceptor)
+  @UseInterceptors(FileInterceptor("photo", multerConfig))
   create(
     @Body() createMemberDto: CreateMemberDto,
     @UploadedFile() photo?: Express.Multer.File
@@ -33,6 +39,11 @@ export class MembersController {
   @Get()
   findAll(): Promise<Member[]> {
     return this.membersService.findAll();
+  }
+
+  @Get("admin/default")
+  async getDefaultAdmin() {
+    return this.adminSeeder.getDefaultAdmin();
   }
 
   @Get(":id")

@@ -75,10 +75,9 @@ export const CreateArticleModal = ({
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    // Ajouter temporairement les informations de l'auteur (en attendant l'authentification)
-    formData.append("authorId", "1"); // ID temporaire numérique
-    formData.append("authorName", "Admin"); // Nom temporaire
-    formData.append("authorRole", "ADMIN"); // Rôle temporaire
+    formData.append("authorId", "1");
+    formData.append("authorName", "Admin");
+    formData.append("authorRole", "admin");
 
     // Supprimer les anciennes données d'images du formData
     formData.delete("images");
@@ -96,11 +95,15 @@ export const CreateArticleModal = ({
     // Ajouter l'information sur l'image principale
     formData.append("mainImageIndex", "0");
 
+    console.log("Submitting article with temporary user data");
+
     // Envoyer les données
     createMutation.mutate(formData, {
       onSuccess: () => {
         // Nettoyer les URLs de prévisualisation
         previewImages.forEach((preview) => URL.revokeObjectURL(preview.url));
+        setImageFiles([]);
+        setPreviewImages([]);
         onClose();
       },
     });

@@ -8,14 +8,16 @@ import {
   Delete,
   UseInterceptors,
   UploadedFiles,
-  ParseUUIDPipe,
   Query,
+  Res,
 } from "@nestjs/common";
 import { NewsService } from "./news.service";
 import { CreateNewsDto } from "./dto/create-news.dto";
 import { UpdateNewsDto } from "./dto/update-news.dto";
 import { FilesInterceptor } from "@nestjs/platform-express";
 import { multerConfig } from "../../config/multer.config";
+import { Response } from "express";
+import { join } from "path";
 
 @Controller("api/news")
 export class NewsController {
@@ -38,15 +40,21 @@ export class NewsController {
     return this.newsService.findAll();
   }
 
+  @Get("images/:filename")
+  getImage(@Param("filename") filename: string, @Res() res: Response) {
+    const imagePath = join(process.cwd(), "uploads", "news", filename);
+    return res.sendFile(imagePath);
+  }
+
   @Get(":id")
-  findOne(@Param("id", ParseUUIDPipe) id: string) {
+  findOne(@Param("id") id: string) {
     return this.newsService.findOne(id);
   }
 
   @Patch(":id")
   @UseInterceptors(FilesInterceptor("images", 10, multerConfig))
   async update(
-    @Param("id", ParseUUIDPipe) id: string,
+    @Param("id") id: string,
     @Body() updateNewsDto: UpdateNewsDto,
     @UploadedFiles() files: Express.Multer.File[]
   ) {
@@ -54,17 +62,17 @@ export class NewsController {
   }
 
   @Delete(":id")
-  remove(@Param("id", ParseUUIDPipe) id: string) {
+  remove(@Param("id") id: string) {
     return this.newsService.remove(id);
   }
 
   @Post(":id/like")
-  incrementLikes(@Param("id", ParseUUIDPipe) id: string) {
+  incrementLikes(@Param("id") id: string) {
     return this.newsService.incrementLikes(id);
   }
 
   @Post(":id/comment")
-  incrementComments(@Param("id", ParseUUIDPipe) id: string) {
+  incrementComments(@Param("id") id: string) {
     return this.newsService.incrementComments(id);
   }
 }

@@ -24,36 +24,61 @@ export class NewsService {
     createNewsDto: CreateNewsDto,
     files?: Express.Multer.File[]
   ): Promise<News> {
+    console.log("Creating news with:", {
+      dto: createNewsDto,
+      filesCount: files?.length || 0,
+      files: files?.map((f) => ({ name: f.originalname, size: f.size })),
+    });
+
     const author = await this.membersService.findOne(createNewsDto.authorId);
-    if (!author) {
-      throw new NotFoundException(
-        `Author with ID ${createNewsDto.authorId} not found`
-      );
-    }
 
     const news = this.newsRepository.create({
-      ...createNewsDto,
+      title: createNewsDto.title,
+      content: createNewsDto.content,
+      category: createNewsDto.category,
       author,
     });
 
+    console.log("News entity created:", news);
+
     // Traiter les images si présentes
     if (files && files.length > 0) {
-      const processedImages = await Promise.all(
-        files.map(async (file, index) => {
-          const filename = await this.imageProcessingService.processImage(file);
-          return this.newsImageRepository.create({
-            url: filename,
-            alt: file.originalname,
-            caption: createNewsDto.captions?.[index] || "",
-            isMain: index === (createNewsDto.mainImageIndex || 0),
-            news,
-          });
-        })
-      );
-      news.images = processedImages;
+      console.log("Processing images...");
+      try {
+        const processedImages = await Promise.all(
+          files.map(async (file, index) => {
+            console.log(`Processing image ${index + 1}:`, file.originalname);
+            const filename =
+              await this.imageProcessingService.processImage(file);
+            console.log(`Image processed, filename:`, filename);
+
+            const newsImage = this.newsImageRepository.create({
+              url: filename,
+              alt: file.originalname,
+              caption: createNewsDto.captions?.[index] || "",
+              isMain: index === (createNewsDto.mainImageIndex || 0),
+            });
+
+            console.log("News image entity created:", newsImage);
+            return newsImage;
+          })
+        );
+
+        console.log("All images processed:", processedImages);
+        news.images = processedImages;
+      } catch (error) {
+        console.error("Error processing images:", error);
+        throw error;
+      }
+    } else {
+      console.log("No images to process");
     }
 
-    return this.newsRepository.save(news);
+    console.log("Saving news to database...");
+    const savedNews = await this.newsRepository.save(news);
+    console.log("News saved successfully:", savedNews);
+
+    return savedNews;
   }
 
   async findAll(): Promise<News[]> {
