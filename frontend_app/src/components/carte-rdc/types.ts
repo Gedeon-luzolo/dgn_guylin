@@ -30,16 +30,9 @@ export interface ProvinceFeature {
   };
 }
 
-// Type pour l'ensemble des données GeoJSON de la RDC
+// Type pour les données GeoJSON complètes
 export interface RDCGeoJSONData {
   type: "FeatureCollection";
-  name?: string;
-  crs?: {
-    type: string;
-    properties: {
-      name: string;
-    };
-  };
   features: ProvinceFeature[];
 }
 
@@ -61,7 +54,7 @@ export interface CarteRDCProps {
   width?: number;
   height?: number;
   dataByProvince?: Record<string, number>;
-  colorScheme?: string;
+  colorScheme?: "Blues" | "Greens" | "Reds" | "Oranges" | "Purples";
   showLegend?: boolean;
   enableTooltips?: boolean;
   onProvinceClick?: (provinceName: string, value?: number) => void;
