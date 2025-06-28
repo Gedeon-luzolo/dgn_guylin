@@ -20,7 +20,7 @@ import { AdminSeeder } from "./database/seeders/admin.seeder";
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => {
         return {
-          type: "mysql",
+          type: "postgres",
           host: configService.get<string>("DB_HOST"),
           port: configService.get<number>("DB_PORT"),
           username: configService.get<string>("DB_USERNAME"),

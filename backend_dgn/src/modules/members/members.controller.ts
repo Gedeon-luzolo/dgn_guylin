@@ -8,6 +8,7 @@ import {
   Param,
   Post,
   Put,
+  Req,
   UploadedFile,
   UseInterceptors,
 } from "@nestjs/common";
@@ -18,6 +19,7 @@ import { PhotoFileInterceptor } from "src/common/interceptors/file.interceptor";
 import { FileInterceptor } from "@nestjs/platform-express";
 import { multerConfig } from "../../config/multer.config";
 import { AdminSeeder } from "../../database/seeders/admin.seeder";
+import { Request } from "express";
 
 @Controller("api/members")
 export class MembersController {
@@ -56,8 +58,10 @@ export class MembersController {
   update(
     @Param("id") id: string,
     @Body() updateMemberDto: CreateMemberDto,
-    @UploadedFile() photo?: Express.Multer.File
+    @UploadedFile() photo?: Express.Multer.File,
+    @Req() req?: Request
   ): Promise<Member> {
+    console.log(req?.body);
     return this.membersService.update(id, updateMemberDto, photo);
   }
 

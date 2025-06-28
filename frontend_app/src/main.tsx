@@ -8,7 +8,14 @@ import ErrorBoundary from "./errors/ErrorBoundary.tsx";
 import { PageLoader } from "./components/loader/pageLoader.tsx";
 import { Toaster } from "sonner";
 
-const queryClient = new QueryClient();
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: false,
+      // retryDelay: 1000,
+    },
+  },
+});
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

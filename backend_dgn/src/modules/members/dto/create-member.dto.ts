@@ -20,7 +20,6 @@ export class CreateMemberDto {
   // })
   telephone: string;
 
-  
   @IsString()
   @IsNotEmpty()
   qualiteMembre: string;

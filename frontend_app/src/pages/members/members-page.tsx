@@ -20,6 +20,8 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { DeleteConfirmationModal } from "@/components/ui/delete-confirmation-modal";
+import { EditMemberModal } from "@/components/members/edit-member-modal";
+import { ErrorPage } from "../error/error-page";
 
 export const MembersPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -27,6 +29,7 @@ export const MembersPage = () => {
   const [memberToDelete, setMemberToDelete] = useState<IMember | null>(null);
   const [showCard, setShowCard] = useState(false);
   const [selectedMember, setSelectedMember] = useState<IMember | null>(null);
+  const [memberToEdit, setMemberToEdit] = useState<IMember | null>(null);
   const [isCapturing, setIsCapturing] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
 
@@ -53,6 +56,10 @@ export const MembersPage = () => {
   const handleShowCard = (member: IMember) => {
     setSelectedMember(member);
     setShowCard(true);
+  };
+
+  const handleEditMember = (member: IMember) => {
+    setMemberToEdit(member);
   };
 
   const handleDownload = async () => {
@@ -97,12 +104,7 @@ export const MembersPage = () => {
       </div>
     );
 
-  if (isError)
-    return (
-      <div className="text-center text-error-500 dark:text-error-400 p-4">
-        <p>Erreur lors de la récupération des membres</p>
-      </div>
-    );
+  if (isError) return <ErrorPage />;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
@@ -151,15 +153,15 @@ export const MembersPage = () => {
 
       {/* Members Grid */}
       <div className="max-w-7xl mx-auto">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredMembers.map((member) => (
             <Card
               key={member.telephone}
               className="backdrop-blur-md bg-white/30 dark:bg-gray-800/30 border-0 shadow-lg hover:shadow-xl transition-all duration-300 hover:scale-[1.02]"
             >
-              <div className="p-6">
-                <div className="flex items-center gap-4 mb-4">
-                  <Avatar className="w-16 h-16 border-2 border-white/20">
+              <div className="p-4">
+                <div className="flex items-center gap-3 mb-3">
+                  <Avatar className="w-12 h-12 border-2 border-white/20">
                     <AvatarImage
                       src={
                         member.photo
@@ -168,47 +170,41 @@ export const MembersPage = () => {
                       }
                       alt={`${member.prenom} ${member.nom}`}
                     />
-                    <AvatarFallback className="text-lg">
+                    <AvatarFallback className="text-sm">
                       {member.prenom[0]}
                       {member.nom[0]}
                     </AvatarFallback>
                   </Avatar>
-                  <div>
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
-                      {member.prenom} {member.postNom} {member.nom}
+                  <div className="flex-1 min-w-0">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white truncate">
+                      {member.prenom} {member.nom}
                     </h3>
-                    <p className="text-sm text-gray-600 dark:text-gray-300">
+                    <p className="text-xs text-gray-600 dark:text-gray-300 truncate">
                       {member.qualiteMembre}
                     </p>
                   </div>
                 </div>
-                <div className="space-y-2 text-sm text-gray-600 dark:text-gray-300">
-                  <p>
+                <div className="space-y-1 text-xs text-gray-600 dark:text-gray-300 mb-3">
+                  <p className="truncate">
                     <span className="font-medium">Province:</span>{" "}
                     {member.province}
                   </p>
-                  <p>
+                  <p className="truncate">
                     <span className="font-medium">Adresse:</span>{" "}
                     {member.adresse}
                   </p>
-                  {member.telephone && (
-                    <p>
-                      <span className="font-medium">Téléphone:</span>{" "}
-                      {member.telephone}
-                    </p>
-                  )}
                 </div>
-                <div className="mt-4 flex justify-end gap-2">
+                <div className="flex justify-end gap-1">
                   <TooltipProvider>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8 text-blue-600 hover:text-blue-700 hover:bg-blue-100"
+                          className="h-7 w-7 text-blue-600 hover:text-blue-700 hover:bg-blue-100"
                           onClick={() => handleShowCard(member)}
                         >
-                          <IdCard className="h-4 w-4" />
+                          <IdCard className="h-3 w-3" />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -218,15 +214,14 @@ export const MembersPage = () => {
 
                     <Tooltip>
                       <TooltipTrigger asChild>
-                        <Link to={`/membres/${member.id}/edit`}>
-                          <Button
-                            variant="ghost"
-                            size="icon"
-                            className="h-8 w-8 text-amber-600 hover:text-amber-700 hover:bg-amber-100"
-                          >
-                            <Pencil className="h-4 w-4" />
-                          </Button>
-                        </Link>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          className="h-7 w-7 text-amber-600 hover:text-amber-700 hover:bg-amber-100"
+                          onClick={() => handleEditMember(member)}
+                        >
+                          <Pencil className="h-3 w-3" />
+                        </Button>
                       </TooltipTrigger>
                       <TooltipContent>
                         <p>Modifier</p>
@@ -238,11 +233,11 @@ export const MembersPage = () => {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-8 w-8 text-red-600 hover:text-red-700 hover:bg-red-100"
+                          className="h-7 w-7 text-red-600 hover:text-red-700 hover:bg-red-100"
                           onClick={() => handleDelete(member)}
                           disabled={deleteMutation.isPending}
                         >
-                          <Trash2 className="h-4 w-4" />
+                          <Trash2 className="h-3 w-3" />
                         </Button>
                       </TooltipTrigger>
                       <TooltipContent>
@@ -306,6 +301,12 @@ export const MembersPage = () => {
         title="Supprimer le membre"
         description={`Êtes-vous sûr de vouloir supprimer ${memberToDelete?.prenom} ${memberToDelete?.nom} ? Cette action est irréversible.`}
         isDeleting={deleteMutation.isPending}
+      />
+
+      <EditMemberModal
+        isOpen={!!memberToEdit}
+        onClose={() => setMemberToEdit(null)}
+        member={memberToEdit}
       />
     </div>
   );
