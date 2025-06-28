@@ -11,7 +11,7 @@ import { provinces } from "@/lib/provinceRdc";
 import { Link } from "react-router-dom";
 import { Pencil, Trash2, IdCard } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
-import { MemberCard } from "@/components/member-card/member-card";
+import { MemberCard } from "@/components/members/member-card";
 import { toPng } from "html-to-image";
 import {
   Tooltip,

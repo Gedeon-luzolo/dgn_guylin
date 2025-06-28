@@ -10,6 +10,13 @@ import { provinces } from "@/lib/provinceRdc";
 import { getImageUrl } from "@/lib/genFuction";
 import { Camera, X } from "lucide-react";
 import LoadingSpinner from "@/components/loader/LoadingSpinner";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "../ui/select";
 
 interface EditMemberModalProps {
   isOpen: boolean;
@@ -214,17 +221,20 @@ export const EditMemberModal = ({
 
           {/* Localisation */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div>
+            <div className="flex flex-col gap-2">
               <Label htmlFor="province">Province *</Label>
-              <select name="province" defaultValue={member.province}>
-                {provinces
-                  .filter((p) => p !== "Tous")
-                  .map((province) => (
-                    <option key={province} value={province}>
+              <Select name="province" defaultValue={member.province}>
+                <SelectTrigger className="py-2 rounded-lg px-6 border border-white">
+                  <SelectValue placeholder="Sélectionner une province" />
+                </SelectTrigger>
+                <SelectContent>
+                  {provinces.map((province) => (
+                    <SelectItem key={province} value={province}>
                       {province}
-                    </option>
+                    </SelectItem>
                   ))}
-              </select>
+                </SelectContent>
+              </Select>
             </div>
 
             <div>
