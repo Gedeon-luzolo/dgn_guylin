@@ -1,4 +1,5 @@
-import { ErrorPage } from "@/pages/error";
+import { ErrorPage } from "@/pages/error/error-page";
+
 
 interface QueryErrorProps {
   error: Error;
