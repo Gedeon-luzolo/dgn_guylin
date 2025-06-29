@@ -13,7 +13,6 @@ const CarteRDC: React.FC<CarteRDCProps> = ({
   dataByProvince = {
     Kinshasa: 120,
     "Haut-Katanga": 95,
-    "Kongo-Central": 80,
     Tanganyika: 50,
     Lualaba: 32,
     "Haut-Lomami": 32,
@@ -24,11 +23,6 @@ const CarteRDC: React.FC<CarteRDCProps> = ({
       effectif: 95,
       ville: "Lubumbashi",
       responsable: "Marie Tshisekedi",
-    },
-    "Kongo-Central": {
-      effectif: 80,
-      ville: "Matadi",
-      responsable: "Pierre Kasongo",
     },
     Tanganyika: { effectif: 50, ville: "Kalemie", responsable: "Paul Mwanza" },
     Lualaba: { effectif: 32, ville: "Kolwezi", responsable: "Sophie Kabila" },
@@ -48,7 +42,7 @@ const CarteRDC: React.FC<CarteRDCProps> = ({
   const [error, setError] = useState<string | null>(null);
 
   // Couleurs pour la carte
-  const defaultColor = "#f0f0f3"; // Couleur par défaut pour les provinces non colorées
+  const defaultColor = "#C4C4C4"; // Couleur par défaut pour les provinces non colorées
   const provincesColor = "#2563eb"; // Couleur bleue uniforme pour les provinces spécifiées
   const borderColor = "#333";
 
@@ -142,11 +136,11 @@ const CarteRDC: React.FC<CarteRDCProps> = ({
           detailedDataByProvince[provinceName];
 
         if (detailedData) {
-          tooltipContent += `<br/><strong>Effectif:</strong> ${detailedData.effectif} membres`;
+          tooltipContent += `<br/><strong>Membres:</strong> ${detailedData.effectif}`;
           tooltipContent += `<br/><strong>Ville:</strong> ${detailedData.ville}`;
           tooltipContent += `<br/><strong>Responsable:</strong> ${detailedData.responsable}`;
         } else {
-          tooltipContent += `<br/>Province sans nos sièges`;
+          tooltipContent += ``;
         }
 
         tooltip.html(tooltipContent);
@@ -193,11 +187,56 @@ const CarteRDC: React.FC<CarteRDCProps> = ({
           onProvinceClick(provinceName, value, detailedData);
         }
       });
+
+    // Ajouter les labels et étoiles pour les provinces sélectionnées
+    const selectedProvinces = Object.keys(detailedDataByProvince);
+
+    selectedProvinces.forEach((provinceName) => {
+      const feature = geoData.features.find(
+        (f) => f.properties.NAME_1 === provinceName
+      );
+
+      if (feature) {
+        // Calculer le centroïde de la province
+        const centroid = path.centroid(feature as any);
+
+        if (centroid && !isNaN(centroid[0]) && !isNaN(centroid[1])) {
+          // Ajouter l'étoile
+          mapGroup
+            .append("text")
+            .attr("x", centroid[0])
+            .attr("y", centroid[1] - 10)
+            .attr("text-anchor", "middle")
+            .attr("font-size", "16px")
+            .attr("fill", "#FFD700")
+            .attr("stroke", "#FFA500")
+            .attr("stroke-width", "0.5px")
+            .style("cursor", "pointer")
+            .text("★");
+
+          // Ajouter le nom de la province
+          mapGroup
+            .append("text")
+            .attr("x", centroid[0])
+            .attr("y", centroid[1] + 15)
+            .attr("text-anchor", "middle")
+            .attr("font-size", "11px")
+            .attr("font-weight", "bold")
+            .attr("fill", "#1a365d")
+            .attr("stroke", "white")
+            .attr("stroke-width", "1px")
+            .attr("paint-order", "stroke")
+            .style("cursor", "pointer")
+            .text(provinceName);
+        }
+      }
+    });
   }, [
     geoData,
     width,
     height,
     dataByProvince,
+    detailedDataByProvince,
     colorScheme,
     onProvinceClick,
     onProvinceHover,
