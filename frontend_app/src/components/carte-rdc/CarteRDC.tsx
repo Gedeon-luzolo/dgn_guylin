@@ -1,6 +1,11 @@
 import React, { useRef, useEffect, useState } from "react";
 import * as d3 from "d3";
-import type { RDCGeoJSONData, ProvinceFeature, CarteRDCProps } from "./types";
+import type {
+  RDCGeoJSONData,
+  ProvinceFeature,
+  CarteRDCProps,
+  ProvinceDetailedData,
+} from "./types";
 
 const CarteRDC: React.FC<CarteRDCProps> = ({
   width = 800,
@@ -9,8 +14,29 @@ const CarteRDC: React.FC<CarteRDCProps> = ({
     Kinshasa: 120,
     "Haut-Katanga": 95,
     "Kongo-Central": 80,
-    "Sud-Ubangi": 50,
-    Tshuapa: 32,
+    Tanganyika: 50,
+    Lualaba: 32,
+    "Haut-Lomami": 32,
+  },
+  detailedDataByProvince = {
+    Kinshasa: { effectif: 120, ville: "Kinshasa", responsable: "Jean Mukamba" },
+    "Haut-Katanga": {
+      effectif: 95,
+      ville: "Lubumbashi",
+      responsable: "Marie Tshisekedi",
+    },
+    "Kongo-Central": {
+      effectif: 80,
+      ville: "Matadi",
+      responsable: "Pierre Kasongo",
+    },
+    Tanganyika: { effectif: 50, ville: "Kalemie", responsable: "Paul Mwanza" },
+    Lualaba: { effectif: 32, ville: "Kolwezi", responsable: "Sophie Kabila" },
+    "Haut-Lomami": {
+      effectif: 32,
+      ville: "Kamina",
+      responsable: "André Kilolo",
+    },
   },
   colorScheme = "Blues",
   onProvinceClick,
@@ -112,8 +138,13 @@ const CarteRDC: React.FC<CarteRDCProps> = ({
         // Contenu du tooltip
         let tooltipContent = `<strong>${provinceName}</strong>`;
 
-        if (provincesToColor.includes(provinceName)) {
-          tooltipContent += `<br/>Province avec nos sièges`;
+        const detailedData: ProvinceDetailedData | undefined =
+          detailedDataByProvince[provinceName];
+
+        if (detailedData) {
+          tooltipContent += `<br/><strong>Effectif:</strong> ${detailedData.effectif} membres`;
+          tooltipContent += `<br/><strong>Ville:</strong> ${detailedData.ville}`;
+          tooltipContent += `<br/><strong>Responsable:</strong> ${detailedData.responsable}`;
         } else {
           tooltipContent += `<br/>Province sans nos sièges`;
         }
@@ -131,7 +162,7 @@ const CarteRDC: React.FC<CarteRDCProps> = ({
           const value = provincesToColor.includes(provinceName)
             ? dataByProvince[provinceName]
             : undefined;
-          onProvinceHover(provinceName, value);
+          onProvinceHover(provinceName, value, detailedData);
         }
       })
       .on("mouseout", function (event, d: ProvinceFeature) {
@@ -157,7 +188,9 @@ const CarteRDC: React.FC<CarteRDCProps> = ({
           const value = provincesToColor.includes(provinceName)
             ? dataByProvince[provinceName]
             : undefined;
-          onProvinceClick(provinceName, value);
+          const detailedData: ProvinceDetailedData | undefined =
+            detailedDataByProvince[provinceName];
+          onProvinceClick(provinceName, value, detailedData);
         }
       });
   }, [

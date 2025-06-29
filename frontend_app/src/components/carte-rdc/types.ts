@@ -5,6 +5,13 @@ export interface ProvinceData {
   properties?: ProvinceProperties;
 }
 
+// Type pour les données détaillées d'une province
+export interface ProvinceDetailedData {
+  effectif: number;
+  ville: string;
+  responsable: string;
+}
+
 // Types pour les propriétés des provinces dans les données GADM
 export interface ProvinceProperties {
   GID_1: string; // Identifiant unique de la province
@@ -39,6 +46,9 @@ export interface RDCGeoJSONData {
 // Type pour les données par province (nom -> valeur)
 export type ProvinceDataMap = Record<string, number>;
 
+// Type pour les données détaillées par province
+export type ProvinceDetailedDataMap = Record<string, ProvinceDetailedData>;
+
 // Configuration de la carte
 export interface MapConfig {
   width: number;
@@ -54,11 +64,20 @@ export interface CarteRDCProps {
   width?: number;
   height?: number;
   dataByProvince?: Record<string, number>;
+  detailedDataByProvince?: ProvinceDetailedDataMap;
   colorScheme?: "Blues" | "Greens" | "Reds" | "Oranges" | "Purples";
   showLegend?: boolean;
   enableTooltips?: boolean;
-  onProvinceClick?: (provinceName: string, value?: number) => void;
-  onProvinceHover?: (provinceName: string, value?: number) => void;
+  onProvinceClick?: (
+    provinceName: string,
+    value?: number,
+    detailedData?: ProvinceDetailedData
+  ) => void;
+  onProvinceHover?: (
+    provinceName: string,
+    value?: number,
+    detailedData?: ProvinceDetailedData
+  ) => void;
   className?: string;
 }
 
