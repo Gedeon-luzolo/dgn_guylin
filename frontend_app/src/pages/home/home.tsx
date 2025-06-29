@@ -1,7 +1,8 @@
 import { slides } from "@/lib/slideItem";
 import { Carousel } from "../../components/carousel/carousel";
-import { CarteRDC } from "../../components/carte-rdc";
 import { useResponsiveDimensions } from "@/hooks/useResponsiveDimension";
+import CarteRDC from "@/components/carte-rdc/CarteRDC";
+
 
 export const HomePage = () => {
   const { width, height } = useResponsiveDimensions(600, 500);

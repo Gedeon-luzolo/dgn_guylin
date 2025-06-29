@@ -1,4 +1,5 @@
 import { AdhesionPage } from "@/pages/adhesion/adhesion-page";
+import { TypeMembrePage } from "@/pages/adhesion/type-membre-page";
 import { ArticlePage } from "@/pages/news/article/article-page";
 // import { NotFoundPage } from "@/pages/not-found/not-found-page";
 import { HomePage } from "@/pages/home/home";
@@ -55,9 +56,15 @@ export const routes = [
     element: <MembersPage />,
   },
   {
+    path: "/type-membre",
+    title: "Choix du type de membre",
+    description: "Sélectionnez votre type de membre",
+    element: <TypeMembrePage />,
+  },
+  {
     path: "/adhesion",
-    title: "",
-    description: "",
+    title: "Formulaire d'adhésion",
+    description: "Remplissez votre formulaire d'adhésion",
     element: <AdhesionPage />,
   },
   {

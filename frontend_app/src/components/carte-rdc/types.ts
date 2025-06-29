@@ -1,3 +1,5 @@
+import type { RDC_PROVINCES } from "@/lib/provinceRdc";
+
 // Types pour les données des provinces de la RDC
 export interface ProvinceData {
   name: string;
@@ -81,34 +83,5 @@ export interface CarteRDCProps {
   className?: string;
 }
 
-// Liste des provinces de la RDC
-export const RDC_PROVINCES = [
-  "Kinshasa",
-  "Kongo-Central",
-  "Haut-Katanga",
-  "Nord-Kivu",
-  "Sud-Kivu",
-  "Kasaï",
-  "Kasaï-Central",
-  "Kasaï-Oriental",
-  "Lomami",
-  "Sankuru",
-  "Maniema",
-  "Tshopo",
-  "Bas-Uele",
-  "Haut-Uele",
-  "Ituri",
-  "Équateur",
-  "Mongala",
-  "Nord-Ubangi",
-  "Sud-Ubangi",
-  "Tshuapa",
-  "Mai-Ndombe",
-  "Kwilu",
-  "Kwango",
-  "Lualaba",
-  "Haut-Lomami",
-  "Tanganyika",
-] as const;
 
 export type RDCProvinceName = (typeof RDC_PROVINCES)[number];

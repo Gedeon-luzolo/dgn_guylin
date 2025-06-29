@@ -5,10 +5,16 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent } from "@/components/ui/card";
 import { useCrud } from "@/hooks/useCrud";
 import type { IMember } from "@/types/memberType";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import { ImagePlusIcon } from "lucide-react";
+import { CustomSelect, type SelectOption } from "@/components/ui/custom-select";
+import { RDC_PROVINCES } from "@/lib/provinceRdc";
 
 export const AdhesionPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  const typeMembre = location.state?.typeMembre || "";
+
   const setFormData = useState<{
     photo: File | null;
   }>({
@@ -16,6 +22,12 @@ export const AdhesionPage: React.FC = () => {
   })[1];
 
   const [previewImage, setPreviewImage] = useState<string | null>(null);
+
+  // Convertir les provinces en format SelectOption
+  const provinceOptions: SelectOption[] = RDC_PROVINCES.map((province) => ({
+    value: province,
+    label: province,
+  }));
 
   const { useCreate } = useCrud<IMember>({
     endpoint: "/members",
@@ -49,9 +61,21 @@ export const AdhesionPage: React.FC = () => {
           REMPLISSEZ LE FORMULAIRE
         </h1>
 
+        {/* {typeMembre && (
+          <div className="text-center mb-6">
+            <p className="text-yellow-400 font-semibold text-lg">
+              Type de membre sélectionné: {typeMembre.toUpperCase()}
+            </p>
+          </div>
+        )} */}
+
         <Card className="bg-white/10 backdrop-blur-lg border-white/20">
           <CardContent className="px-8">
             <form action={handleSubmit} className="space-y-6">
+              {/* Champ caché pour le type de membre */}
+              {/* {typeMembre && (
+                <input type="hidden" name="qualiteMembre" value={typeMembre} />
+              )} */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Nom */}
                 <div className="space-y-2">
@@ -104,7 +128,11 @@ export const AdhesionPage: React.FC = () => {
                     type="text"
                     id="qualiteMembre"
                     name="qualiteMembre"
-                    className="border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl"
+                    value={typeMembre || ""}
+                    readOnly={!!typeMembre}
+                    className={`border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl ${
+                      typeMembre ? "cursor-not-allowed opacity-80" : ""
+                    }`}
                     required
                   />
                 </div>
@@ -127,11 +155,10 @@ export const AdhesionPage: React.FC = () => {
                   <Label htmlFor="province" className="text-white">
                     Province:
                   </Label>
-                  <Input
-                    type="text"
-                    id="province"
+                  <CustomSelect
                     name="province"
-                    className="border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl"
+                    options={provinceOptions}
+                    placeholder="Sélectionnez une province"
                     required
                   />
                 </div>
@@ -167,20 +194,8 @@ export const AdhesionPage: React.FC = () => {
                         />
                       ) : (
                         <div className="flex flex-col items-center justify-center h-full text-white/50">
-                          <svg
-                            className="w-8 h-8 mb-2"
-                            fill="none"
-                            stroke="currentColor"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              strokeLinecap="round"
-                              strokeLinejoin="round"
-                              strokeWidth={2}
-                              d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"
-                            />
-                          </svg>
-                          <span className="text-xs">
+                          <ImagePlusIcon className="w-8 h-8 mb-2" />
+                          <span className="text-xs text-center">
                             Ajouter votre image ici
                           </span>
                         </div>
@@ -201,10 +216,15 @@ export const AdhesionPage: React.FC = () => {
                 <div>
                   <Button
                     type="submit"
-                    className="w-full bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-3 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2"
+                    disabled={createMutation.isPending}
+                    className="w-full bg-yellow-400 hover:bg-yellow-500 text-blue-900 font-bold py-3 rounded-xl transition-all duration-200 flex items-center justify-center space-x-2 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     <span>📝</span>
-                    <span>Enregistrez</span>
+                    <span>
+                      {createMutation.isPending
+                        ? "Enregistrement..."
+                        : "Enregistrez"}
+                    </span>
                   </Button>
                 </div>
               </div>

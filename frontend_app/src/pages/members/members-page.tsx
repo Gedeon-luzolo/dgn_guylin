@@ -7,7 +7,7 @@ import type { IMember } from "@/types/memberType";
 import LoadingSpinner from "@/components/loader/LoadingSpinner";
 import { getImageUrl } from "@/lib/genFuction";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { provinces } from "@/lib/provinceRdc";
+import { RDC_PROVINCES } from "@/lib/provinceRdc";
 import { Link } from "react-router-dom";
 import { Pencil, Trash2, IdCard } from "lucide-react";
 import { Modal } from "@/components/ui/modal";
@@ -32,6 +32,7 @@ export const MembersPage = () => {
   const [memberToEdit, setMemberToEdit] = useState<IMember | null>(null);
   const [isCapturing, setIsCapturing] = useState(false);
   const cardRef = useRef<HTMLDivElement>(null);
+  const provinces = ["all", ...RDC_PROVINCES];
 
   const { useList, useDelete } = useCrud<IMember>({
     endpoint: "/members",
@@ -120,7 +121,7 @@ export const MembersPage = () => {
         </div>
 
         <div>
-          <Link to="/adhesion">
+          <Link to="/type-membre">
             <Button>Adherer un membre</Button>
           </Link>
         </div>

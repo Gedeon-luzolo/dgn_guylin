@@ -6,7 +6,7 @@ import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useCrud } from "@/hooks/useCrud";
 import type { IMember } from "@/types/memberType";
-import { provinces } from "@/lib/provinceRdc";
+import { RDC_PROVINCES } from "@/lib/provinceRdc";
 import { getImageUrl } from "@/lib/genFuction";
 import { Camera, X } from "lucide-react";
 import LoadingSpinner from "@/components/loader/LoadingSpinner";
@@ -228,7 +228,7 @@ export const EditMemberModal = ({
                   <SelectValue placeholder="Sélectionner une province" />
                 </SelectTrigger>
                 <SelectContent>
-                  {provinces.map((province) => (
+                  {RDC_PROVINCES.map((province) => (
                     <SelectItem key={province} value={province}>
                       {province}
                     </SelectItem>
