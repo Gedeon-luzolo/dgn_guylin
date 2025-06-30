@@ -25,7 +25,7 @@ import { Request } from "express";
 export class MembersController {
   constructor(
     private readonly membersService: MembersService,
-    private readonly adminSeeder: AdminSeeder
+    private readonly adminSeeder: AdminSeeder,
   ) {}
 
   @Post()

@@ -6,8 +6,8 @@ import { AppService } from "./app.service";
 import { NewsModule } from "./modules/news/news.module";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
-import { AdhesionModule } from "./modules/adhesion/adhesion.module";
 import { MembersModule } from "./modules/members/members.module";
+import { ChatModule } from "./modules/chat/chat.module";
 import { SeederModule } from "./database/seeders/seeder.module";
 import { AdminSeeder } from "./database/seeders/admin.seeder";
 
@@ -27,7 +27,7 @@ import { AdminSeeder } from "./database/seeders/admin.seeder";
           password: configService.get<string>("DB_PASSWORD"),
           database: configService.get<string>("DB_NAME"),
           entities: [__dirname + "/**/*.entity{.ts,.js}"],
-          logging: true,
+          // logging: ,
           synchronize: true,
         };
       },
@@ -38,9 +38,9 @@ import { AdminSeeder } from "./database/seeders/admin.seeder";
       serveRoot: "/uploads",
     }),
     SeederModule,
-    AdhesionModule,
     SeederModule,
     MembersModule,
+    ChatModule,
     NewsModule,
   ],
   controllers: [AppController],
