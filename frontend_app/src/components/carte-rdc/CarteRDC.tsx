@@ -161,7 +161,7 @@ const CarteRDC: React.FC<CarteRDCProps> = ({
           onProvinceHover(provinceName, value, detailedData);
         }
       })
-      .on("mouseout", function (event, d: ProvinceFeature) {
+      .on("mouseout", function (_event, d: ProvinceFeature) {
         const provinceName = d.properties.NAME_1;
 
         // Déterminer la couleur originale de cette province
@@ -178,7 +178,7 @@ const CarteRDC: React.FC<CarteRDCProps> = ({
         // Supprimer le tooltip
         d3.selectAll(".carte-rdc-tooltip").remove();
       })
-      .on("click", function (event, d: ProvinceFeature) {
+      .on("click", function (_event, d: ProvinceFeature) {
         const provinceName = d.properties.NAME_1;
         if (onProvinceClick) {
           const value = provincesToColor.includes(provinceName)

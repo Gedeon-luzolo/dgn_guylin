@@ -48,7 +48,8 @@ export const NavBar: React.FC = () => {
       >
         <div className="max-w-7xl mx-auto px-6">
           {/* Container avec glassmorphism moderne */}
-          <div className="relative backdrop-blur-md bg-gradient-to-r from-purple-500/40 via-blue-500/40 to-blue-700/50 p-4 border border-white/20 rounded-2xl shadow-xl shadow-black/5">
+
+          <div className="relative backdrop-blur-md bg-gradient-to-r from-purple-500/40 via-blue-500/40 to-blue-700/50 p-4 border border-white/20 rounded-4xl shadow-xl shadow-black/5">
             <div className="relative px-6 lg:px-8">
               <div className="flex items-center justify-between h-8">
                 {/* Logo section */}

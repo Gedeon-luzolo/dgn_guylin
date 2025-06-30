@@ -3,6 +3,7 @@ import { NavBar } from "./components/nav-bar/nav-bar";
 // import { Footer } from "./components/footer/footer";
 import { routes } from "./routes/routes";
 import NewFooter from "./components/footer/NewFooter";
+import { ChatModal } from "./components/chat/chat-modal";
 
 function App() {
   const element = useRoutes(routes);
@@ -13,6 +14,8 @@ function App() {
       <main className="flex-grow">{element}</main>
       {/* <Footer /> */}
       <NewFooter />
+      {/* Chat modal flottant accessible partout */}
+      <ChatModal />
     </div>
   );
 }

@@ -41,6 +41,8 @@ export const MembersPage = () => {
   });
 
   const { data: members = [], isLoading, isError } = useList();
+  console.log(members);
+
   const deleteMutation = useDelete();
 
   const handleDelete = async (member: IMember) => {

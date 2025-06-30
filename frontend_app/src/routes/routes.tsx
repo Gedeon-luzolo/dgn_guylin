@@ -1,7 +1,6 @@
 import { AdhesionPage } from "@/pages/adhesion/adhesion-page";
 import { TypeMembrePage } from "@/pages/adhesion/type-membre-page";
 import { ArticlePage } from "@/pages/news/article/article-page";
-// import { NotFoundPage } from "@/pages/not-found/not-found-page";
 import { HomePage } from "@/pages/home/home";
 import { MembersPage } from "@/pages/members/members-page";
 import { ApplicationsPage } from "@/pages/applications/applications-page";
