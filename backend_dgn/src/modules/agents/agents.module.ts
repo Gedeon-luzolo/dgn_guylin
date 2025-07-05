@@ -10,5 +10,6 @@ import { ImageProcessingService } from "src/common/services/image-processing.ser
   imports: [TypeOrmModule.forFeature([Agent, User])],
   controllers: [AgentsController],
   providers: [AgentsService, ImageProcessingService],
+  exports: [AgentsService, TypeOrmModule, ImageProcessingService],
 })
 export class AgentsModule {}

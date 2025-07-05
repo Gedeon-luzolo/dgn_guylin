@@ -9,6 +9,7 @@ import { CommuniquesPage } from "@/pages/communiques/communiques-page";
 import { NotFoundPage } from "@/pages/not-found/not-found-page";
 import { AgentsPage } from "@/pages/agents/agents-page";
 import { CreateAgentPage } from "@/pages/agents/create-agent-page";
+import { AgentContributionPage } from "@/pages/agents/agent-contribution-page";
 
 // Types
 export interface CustomRouteObject {
@@ -79,6 +80,12 @@ export const routes = [
     title: "Créer un agent",
     description: "Créer un agent",
     element: <CreateAgentPage />,
+  },
+  {
+    path: "/agents/:id/contributions",
+    title: "Contributions de l'agent",
+    description: "Gérer les contributions d'un agent",
+    element: <AgentContributionPage />,
   },
   {
     path: "*",

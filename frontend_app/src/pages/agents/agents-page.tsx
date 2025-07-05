@@ -2,15 +2,16 @@ import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { BackButton } from "@/components/ui/backButton";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useCrud } from "@/hooks/useCrud";
-import { PhoneIcon, UserIcon } from "lucide-react";
+import { PhoneIcon, UserIcon, WalletIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import type { IAgent } from "@/types/iAgents";
 import { FlagOverlay } from "@/components/backgrounds/flag-overlay";
 import { getImageUrl } from "@/lib/genFuction";
 
 export function AgentsPage() {
+  const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState("");
   const [searchResults, setSearchResults] = useState<IAgent[]>([]);
   const [isSearching, setIsSearching] = useState(false);
@@ -33,6 +34,10 @@ export function AgentsPage() {
     });
 
     setSearchResults(results);
+  };
+
+  const handleAgentClick = (agentId: string) => {
+    navigate(`/agents/${agentId}/contributions`);
   };
 
   return (
@@ -102,7 +107,8 @@ export function AgentsPage() {
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
-                    className="group relative bg-white/10 hover:bg-white/15 backdrop-blur-lg border border-white/10 hover:border-white/20 rounded-xl overflow-hidden transition-all duration-300"
+                    onClick={() => handleAgentClick(agent.id)}
+                    className="group relative bg-white/10 hover:bg-white/15 backdrop-blur-lg border border-white/10 hover:border-white/20 rounded-xl overflow-hidden transition-all duration-300 cursor-pointer"
                   >
                     <div className="absolute inset-0 bg-gradient-to-r from-purple-500/10 via-blue-500/10 to-teal-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
 
@@ -139,14 +145,19 @@ export function AgentsPage() {
                               {agent.user.prenom}
                             </p>
                           </div>
-                          <div className="flex items-center text-white/60 text-sm">
-                            <PhoneIcon className="w-4 h-4 mr-1" />
-                            <span className="hidden sm:inline">
-                              {agent.user.telephone}
-                            </span>
-                            <span className="sm:hidden">
-                              {agent.user.telephone.slice(-4)}
-                            </span>
+                          <div className="flex items-center gap-4">
+                            <div className="flex items-center text-white/60 text-sm">
+                              <PhoneIcon className="w-4 h-4 mr-1" />
+                              <span className="hidden sm:inline">
+                                {agent.user.telephone}
+                              </span>
+                              <span className="sm:hidden">
+                                {agent.user.telephone.slice(-4)}
+                              </span>
+                            </div>
+                            <div className="hidden sm:flex items-center text-yellow-400/70 group-hover:text-yellow-400 transition-colors duration-300">
+                              <WalletIcon className="w-5 h-5" />
+                            </div>
                           </div>
                         </div>
                       </div>

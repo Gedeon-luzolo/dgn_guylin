@@ -10,6 +10,7 @@ import { ChatModule } from "./modules/chat/chat.module";
 import { SeederModule } from "./database/seeders/seeder.module";
 import { AdminSeeder } from "./database/seeders/admin.seeder";
 import { AgentsModule } from "./modules/agents/agents.module";
+import { ContributionsModule } from "./modules/contributions/contributions.module";
 
 @Module({
   imports: [
@@ -43,6 +44,7 @@ import { AgentsModule } from "./modules/agents/agents.module";
     ChatModule,
     NewsModule,
     AgentsModule,
+    ContributionsModule,
   ],
   controllers: [AppController],
 })
