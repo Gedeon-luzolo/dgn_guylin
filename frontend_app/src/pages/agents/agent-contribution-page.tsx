@@ -3,7 +3,13 @@ import { BackButton } from "@/components/ui/backButton";
 import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { FlagOverlay } from "@/components/backgrounds/flag-overlay";
-import { UserIcon, PlusCircleIcon, HistoryIcon } from "lucide-react";
+import {
+  UserIcon,
+  PlusCircleIcon,
+  HistoryIcon,
+  ChevronLeftIcon,
+  ChevronRightIcon,
+} from "lucide-react";
 import type { IAgent } from "@/types/iAgents";
 import { getImageUrl } from "@/lib/genFuction";
 import { useCrud } from "@/hooks/useCrud";
@@ -11,6 +17,9 @@ import { useParams } from "react-router-dom";
 import { AddContributionModal } from "@/components/agents/add-contribution-modal";
 import type { IContribution } from "@/types/contribution-type";
 import { formatNumber } from "@/lib/format-money";
+import { usePagination } from "@/hooks/usePagination";
+
+const ITEMS_PER_PAGE = 7;
 
 export const AgentContributionPage = () => {
   const { id } = useParams();
@@ -29,6 +38,14 @@ export const AgentContributionPage = () => {
 
   const { data: agent } = useGetAgent(id as string);
   const { data: contributions = [] } = useGetContributions();
+
+  const {
+    currentItems: currentContributions,
+    totalPages,
+    currentPage,
+    handlePreviousPage,
+    handleNextPage,
+  } = usePagination(contributions, ITEMS_PER_PAGE);
 
   if (!agent) return null;
 
@@ -96,7 +113,7 @@ export const AgentContributionPage = () => {
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-white/5">
-                    {contributions.map((contribution) => (
+                    {currentContributions.map((contribution) => (
                       <tr
                         key={contribution.id}
                         className="hover:bg-white/5 transition-colors duration-150"
@@ -115,6 +132,37 @@ export const AgentContributionPage = () => {
                     ))}
                   </tbody>
                 </table>
+
+                {/* Pagination controls */}
+                {totalPages > 1 && (
+                  <div className="flex items-center justify-between px-4 py-3 bg-white/5">
+                    <div className="flex items-center gap-2 text-sm text-white/70">
+                      <span>
+                        Page {currentPage} sur {totalPages}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Button
+                        onClick={handlePreviousPage}
+                        disabled={currentPage === 1}
+                        variant="outline"
+                        size="sm"
+                        className="text-white border-white/20 hover:bg-white/10"
+                      >
+                        <ChevronLeftIcon className="w-4 h-4" />
+                      </Button>
+                      <Button
+                        onClick={handleNextPage}
+                        disabled={currentPage === totalPages}
+                        variant="outline"
+                        size="sm"
+                        className="text-white border-white/20 hover:bg-white/10"
+                      >
+                        <ChevronRightIcon className="w-4 h-4" />
+                      </Button>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
           </Card>
