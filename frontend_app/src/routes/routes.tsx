@@ -7,6 +7,8 @@ import { ApplicationsPage } from "@/pages/applications/applications-page";
 import { NewsPage } from "@/pages/news/news-page";
 import { CommuniquesPage } from "@/pages/communiques/communiques-page";
 import { NotFoundPage } from "@/pages/not-found/not-found-page";
+import { AgentsPage } from "@/pages/agents/agents-page";
+import { CreateAgentPage } from "@/pages/agents/create-agent-page";
 
 // Types
 export interface CustomRouteObject {
@@ -65,6 +67,18 @@ export const routes = [
     title: "Formulaire d'adhésion",
     description: "Remplissez votre formulaire d'adhésion",
     element: <AdhesionPage />,
+  },
+  {
+    path: "/agents",
+    title: "Agents",
+    description: "Liste des agents",
+    element: <AgentsPage />,
+  },
+  {
+    path: "/agents/create",
+    title: "Créer un agent",
+    description: "Créer un agent",
+    element: <CreateAgentPage />,
   },
   {
     path: "*",

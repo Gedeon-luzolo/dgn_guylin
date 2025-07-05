@@ -21,7 +21,7 @@ export const applications: Application[] = [
     id: "cotisations",
     title: "PAIEMENT DES COTISATIONS (10$)",
 
-    link: "#",
+    link: "/agents",
   },
   {
     id: "logo",

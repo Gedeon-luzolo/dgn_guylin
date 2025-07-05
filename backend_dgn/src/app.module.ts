@@ -2,7 +2,6 @@ import { Module, OnApplicationBootstrap } from "@nestjs/common";
 import { TypeOrmModule } from "@nestjs/typeorm";
 import { ConfigModule, ConfigService } from "@nestjs/config";
 import { AppController } from "./app.controller";
-import { AppService } from "./app.service";
 import { NewsModule } from "./modules/news/news.module";
 import { ServeStaticModule } from "@nestjs/serve-static";
 import { join } from "path";
@@ -10,6 +9,7 @@ import { MembersModule } from "./modules/members/members.module";
 import { ChatModule } from "./modules/chat/chat.module";
 import { SeederModule } from "./database/seeders/seeder.module";
 import { AdminSeeder } from "./database/seeders/admin.seeder";
+import { AgentsModule } from "./modules/agents/agents.module";
 
 @Module({
   imports: [
@@ -42,9 +42,9 @@ import { AdminSeeder } from "./database/seeders/admin.seeder";
     MembersModule,
     ChatModule,
     NewsModule,
+    AgentsModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
 })
 export class AppModule implements OnApplicationBootstrap {
   constructor(private adminSeeder: AdminSeeder) {}

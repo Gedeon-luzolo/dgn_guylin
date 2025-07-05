@@ -5,18 +5,19 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   OneToOne,
-  JoinColumn,
 } from "typeorm";
-import { User } from "../../users/entities/user.entity";
+import { Member } from "../../members/entities/member.entity";
+import { Agent } from "../../agents/entities/agent.entity";
 
-@Entity("members")
-export class Member {
+export enum Gender {
+  MALE = "M",
+  FEMALE = "F",
+}
+
+@Entity("users")
+export class User {
   @PrimaryGeneratedColumn("uuid")
   id: string;
-
-  @OneToOne("User", "member", { eager: true })
-  @JoinColumn()
-  user: User;
 
   @Column()
   nom: string;
@@ -27,14 +28,12 @@ export class Member {
   @Column()
   prenom: string;
 
-  @Column()
-  qualiteMembre: string;
-
-  @Column()
-  province: string;
-
-  @Column()
-  adresse: string;
+  @Column({
+    type: "enum",
+    enum: ["Homme", "Femme"],
+    default: "Homme",
+  })
+  genre: "Homme" | "Femme";
 
   @Column({ nullable: true, unique: true })
   telephone: string;
@@ -42,12 +41,15 @@ export class Member {
   @Column({ nullable: true })
   photo: string;
 
-  @Column({ default: true })
-  isActive: boolean;
-
   @CreateDateColumn()
   createdAt: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
+
+  @OneToOne("Member", "user")
+  member: Member;
+
+  @OneToOne("Agent", "user")
+  agent: Agent;
 }

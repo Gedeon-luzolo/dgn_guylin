@@ -49,8 +49,8 @@ export const AdhesionPage: React.FC = () => {
     }
   };
 
-  const handleSubmit = async (formData: FormData) => {
-    await createMutation.mutateAsync(formData);
+  const handleSubmit = (formData: FormData) => {
+    createMutation.mutate(formData);
     navigate("/members");
   };
 
@@ -60,14 +60,6 @@ export const AdhesionPage: React.FC = () => {
         <h1 className="text-3xl font-bold text-white text-center mb-6 mt-16">
           REMPLISSEZ LE FORMULAIRE
         </h1>
-
-        {/* {typeMembre && (
-          <div className="text-center mb-6">
-            <p className="text-yellow-400 font-semibold text-lg">
-              Type de membre sélectionné: {typeMembre.toUpperCase()}
-            </p>
-          </div>
-        )} */}
 
         <Card className="bg-white/10 backdrop-blur-lg border-white/20">
           <CardContent className="px-8">

@@ -2,11 +2,10 @@ import {
   IsString,
   IsNotEmpty,
   IsOptional,
-  IsPhoneNumber,
 } from "class-validator";
 import { UserData } from "../../users/entities/user.interface";
 
-export class CreateMemberDto implements UserData {
+export class CreateAgentDto implements UserData {
   @IsString()
   @IsNotEmpty()
   nom: string;
@@ -23,7 +22,7 @@ export class CreateMemberDto implements UserData {
   @IsNotEmpty()
   genre: "Homme" | "Femme";
 
-  @IsPhoneNumber()
+  @IsString()
   @IsNotEmpty()
   telephone: string;
 
@@ -32,14 +31,18 @@ export class CreateMemberDto implements UserData {
   photo: string;
 
   @IsString()
-  @IsNotEmpty()
-  qualiteMembre: string;
+  @IsOptional()
+  fonction?: string;
 
   @IsString()
-  @IsNotEmpty()
-  province: string;
+  @IsOptional()
+  societe?: string;
 
   @IsString()
-  @IsNotEmpty()
-  adresse: string;
+  @IsOptional()
+  appartenancePolitique?: string;
+
+  @IsString()
+  @IsOptional()
+  niveauEtudes?: string;
 }

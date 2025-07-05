@@ -9,38 +9,26 @@ import {
 } from "typeorm";
 import { User } from "../../users/entities/user.entity";
 
-@Entity("members")
-export class Member {
+@Entity("agents")
+export class Agent {
   @PrimaryGeneratedColumn("uuid")
   id: string;
 
-  @OneToOne("User", "member", { eager: true })
+  @OneToOne("User", "agent", { eager: true })
   @JoinColumn()
   user: User;
 
-  @Column()
-  nom: string;
-
-  @Column()
-  postNom: string;
-
-  @Column()
-  prenom: string;
-
-  @Column()
-  qualiteMembre: string;
-
-  @Column()
-  province: string;
-
-  @Column()
-  adresse: string;
-
-  @Column({ nullable: true, unique: true })
-  telephone: string;
+  @Column({ nullable: true })
+  fonction: string;
 
   @Column({ nullable: true })
-  photo: string;
+  societe: string;
+
+  @Column({ nullable: true })
+  appartenancePolitique: string;
+
+  @Column({ nullable: true })
+  niveauEtudes: string;
 
   @Column({ default: true })
   isActive: boolean;
