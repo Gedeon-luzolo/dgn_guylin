@@ -64,7 +64,7 @@ export const NavBar: React.FC = () => {
                   >
                     <div className="size-12 rounded-full">
                       <img
-                        src="/src/assets/images/logo/logo_dgn.png"
+                        src="/src/assets/images/logo/logo-DGN-png.png"
                         alt="logo"
                         className="w-full h-full object-cover"
                       />

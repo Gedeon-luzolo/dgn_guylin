@@ -43,7 +43,7 @@ export function AgentsPage() {
   return (
     <div className=" bg-blue-600 overflow-hidden">
       {/* Flag Overlay */}
-      <FlagOverlay />
+      <FlagOverlay className="fixed" />
       {/* Contenu */}
       <div className="relative z-10 container mx-auto px-4 py-30">
         {/* Bouton retour */}

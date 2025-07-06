@@ -69,7 +69,7 @@ export const AboutPage = () => {
             <div className="overflow-hidden rounded-4xl ">
               <div className="relative">
                 <img
-                  src="./src/assets/images/carousel/guylin1.png"
+                  src="./src/assets/images/guylin/guylin-about.jpg"
                   alt="Guylain Nyembo"
                   className="w-full h-full object-cover"
                 />
@@ -84,44 +84,7 @@ export const AboutPage = () => {
           </div>
         </div>
 
-        {/* Objectives Section */}
-        <div className="mt-16">
-          <div className="text-center mb-12">
-            <div className="flex items-center justify-center mb-6">
-              <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
-                <span className="text-2xl">🧭</span>
-              </div>
-            </div>
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-              Nos Objectifs Spécifiques
-            </h2>
-          </div>
-
-          <div className="grid md:grid-cols-2 gap-8">
-            {[
-              "Promouvoir la vision, les actions et les valeurs incarnées par le Président de la République",
-              "Conscientiser la jeunesse sur son rôle dans la construction du pays",
-              "Encourager l'autonomisation des jeunes et des femmes à travers l'entrepreneuriat, l'innovation, la formation et la santé",
-              "Appuyer les initiatives locales de développement rural et urbain",
-              "Lutter contre la pauvreté, l'analphabétisme, le tribalisme et l'exclusion sociale",
-              "Défendre les causes liées à l'environnement, aux droits humains et à la bonne gouvernance",
-            ].map((objective, index) => (
-              <Card
-                key={index}
-                className="p-6 bg-white dark:bg-gray-800 shadow-md border-l-4 border-blue-700"
-              >
-                <div className="flex items-center">
-                  <span className="text-2xl font-bold text-blue-700 dark:text-blue-400 mr-4">
-                    {String(index + 1).padStart(2, "0")}
-                  </span>
-                  <p className="text-gray-700 dark:text-gray-300">
-                    {objective}
-                  </p>
-                </div>
-              </Card>
-            ))}
-          </div>
-        </div>
+   
 
         {/* Ethical Engagement Section */}
         <div className="mt-16">

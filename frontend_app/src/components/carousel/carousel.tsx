@@ -3,7 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import flagOverlay from "@/assets/images/flag_overlay.png";
+import { FlagOverlay } from "../backgrounds/flag-overlay";
 
 interface Slide {
   image: string;
@@ -78,17 +78,7 @@ export const Carousel: React.FC<CarouselProps> = ({
       )}
     >
       {/* Flag Overlay */}
-      <div className="absolute inset-0 -z-0">
-        <img
-          src={flagOverlay}
-          alt=""
-          className="h-full w-full object-cover opacity-40"
-        />
-      </div>
-
-      {/* Fond décoratif */}
-      <div className="absolute inset-0 z-0 bg-gradient-to-r from-purple-600 via-blue-600 to-green-500 opacity-20" />
-
+      <FlagOverlay />
       {/* Navigation */}
       <div className="absolute inset-x-0 top-1/2 z-40 flex -translate-y-1/2 justify-between px-2 md:px-4">
         <Button
@@ -122,10 +112,10 @@ export const Carousel: React.FC<CarouselProps> = ({
             x: { type: "spring", stiffness: 300, damping: 30 },
             opacity: { duration: 0.2 },
           }}
-          className="absolute inset-0 z-50 flex flex-col md:flex-row items-center justify-between px-4 md:px-16 pt-30 md:pt-35"
+          className="absolute inset-0 z-50 flex flex-col md:flex-row items-center justify-between px-4 md:px-16 pt-30 md:pt-50"
         >
           {/* Contenu textuel */}
-          <div className="w-full md:w-1/2 space-y-2 md:space-y-4 text-white text-center md:text-left">
+          <div className="w-full md:w-1/2 space-y-2 md:space-y-4 text-white text-center md:text-left md:mb-20 mb-0">
             <motion.h2
               initial={{ y: 20, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
@@ -192,7 +182,7 @@ export const Carousel: React.FC<CarouselProps> = ({
         {slides.map((_, index) => (
           <button
             key={index}
-            className={`h-1.5 md:h-2 transition-all ${
+            className={`h-1.5 md:h-2 transition-all rounded-4xl ${
               index === currentIndex
                 ? "w-6 md:w-8 bg-yellow-400"
                 : "w-1.5 md:w-2 bg-white/50 hover:bg-white/75"

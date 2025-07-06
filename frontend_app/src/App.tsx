@@ -16,7 +16,7 @@ function App() {
   );
 
   return (
-    <div className="min-h-screen flex flex-col bg-primary text-foreground">
+    <div className="min-h-screen flex flex-col bg-blue-500 text-foreground">
       <NavBar />
       <main className="flex-grow">{element}</main>
       {showNewFooter ? <NewFooter /> : <Footer />}

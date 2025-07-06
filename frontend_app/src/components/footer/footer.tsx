@@ -4,7 +4,7 @@ export const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="w-full mt-auto">
+    <footer className="w-full mt-auto z-50">
       {/* Bandes de couleurs */}
       <div className="flex w-full h-1">
         <div className="flex-1 bg-red-600" />

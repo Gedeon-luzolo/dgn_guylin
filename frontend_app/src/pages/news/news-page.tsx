@@ -29,6 +29,12 @@ export const NewsPage = () => {
 
   const { data: news = [], isLoading, isError } = useList();
 
+    const featuredArticle = news[0];
+    const getMainImage = (images: NewsImage[]): NewsImage | undefined => {
+      return images.find((img) => img.isMain);
+    };
+
+
   if (isLoading)
     return (
       <div className="flex justify-center items-center min-h-[200px]">
@@ -84,10 +90,6 @@ export const NewsPage = () => {
     );
   }
 
-  const featuredArticle = news[0];
-  const getMainImage = (images: NewsImage[]): NewsImage | undefined => {
-    return images.find((img) => img.isMain);
-  };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
