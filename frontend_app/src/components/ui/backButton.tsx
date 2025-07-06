@@ -10,7 +10,7 @@ export function BackButton({
   className?: string;
 }) {
   return (
-    <div className="flex justify-end">
+    <div className="flex justify-end z-90">
       <Link
         to={to}
         className={cn(

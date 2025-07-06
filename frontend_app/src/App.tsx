@@ -11,7 +11,7 @@ function App() {
   const location = useLocation();
 
   // Pages où on veut afficher le NewFooter
-  const showNewFooter = ["/", "/actualites", "/a-propos"].includes(
+  const showNewFooter = ["/", "/actualites", "/about"].includes(
     location.pathname
   );
 

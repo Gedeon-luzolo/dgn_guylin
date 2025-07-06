@@ -79,10 +79,7 @@ const NewFooter: React.FC = () => {
                     </li>
                   ))}
                   <li>
-                    <Link
-                      to="/a-propos"
-                      className="hover:underline text-gray-200"
-                    >
+                    <Link to="/about" className="hover:underline text-gray-200">
                       À PROPOS
                     </Link>
                   </li>

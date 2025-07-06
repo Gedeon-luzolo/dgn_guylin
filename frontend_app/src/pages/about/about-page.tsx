@@ -2,15 +2,18 @@ import { Card } from "@/components/ui/card";
 
 export const AboutPage = () => {
   return (
-    <div className="min-h-screen bg-[#f8f9fa] dark:bg-gray-900">
+    <div className="bg-[#f8f9fa] dark:bg-gray-900">
       {/* Hero Banner */}
+
       <div className="relative bg-blue-900 dark:bg-blue-950">
-        <div className="absolute inset-0 bg-[url('/src/assets/images/flag-pattern.png')] opacity-10"></div>
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-24">
+        <div className="absolute -z-0 inset-0 bg-[url('/src/assets/images/flag_overlay.png')] opacity-10"></div>
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
-            <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
+            <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 pt-13">
               Qui sommes-nous ?
             </h1>
+
             <div className="flex justify-center space-x-2">
               <div className="w-8 h-1 bg-red-600"></div>
               <div className="w-8 h-1 bg-yellow-400"></div>
@@ -24,9 +27,9 @@ export const AboutPage = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Text Content */}
-          <div className="space-y-8">
-            <Card className="p-8 border-l-4 border-blue-700 bg-white dark:bg-gray-800 shadow-md">
-              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+          <div>
+            <div className="p-8">
+              <p className="text-lg text-gray-700 text-justify dark:text-gray-300">
                 La{" "}
                 <span className="font-semibold text-blue-800 dark:text-blue-400">
                   Dynamique Guylain Nyembo
@@ -38,10 +41,10 @@ export const AboutPage = () => {
                 la jeunesse et les femmes jouent un rôle moteur dans le
                 développement local et national.
               </p>
-            </Card>
+            </div>
 
-            <Card className="p-8 bg-white dark:bg-gray-800 shadow-md">
-              <div className="flex items-center mb-6">
+            <div className="p-8">
+              <div className="flex items-center mb-4">
                 <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
                   <span className="text-2xl">🎯</span>
                 </div>
@@ -49,7 +52,7 @@ export const AboutPage = () => {
                   Notre Vision
                 </h2>
               </div>
-              <p className="text-lg text-gray-700 dark:text-gray-300 leading-relaxed">
+              <p className="text-lg text-gray-700 dark:text-gray-300  text-justify leading-relaxed">
                 Notre vision est celle d'une République Démocratique du Congo
                 sans pauvreté, avec une population valorisée à{" "}
                 <span className="font-semibold text-blue-800 dark:text-blue-400">
@@ -58,13 +61,13 @@ export const AboutPage = () => {
                 à travers son capital humain, conformément à la vision du Chef
                 de l'État sur l'émergence de la Nation.
               </p>
-            </Card>
+            </div>
           </div>
 
           {/* Image Section */}
           <div className="relative">
-            <Card className="overflow-hidden bg-white dark:bg-gray-800 shadow-lg">
-              <div className="aspect-[4/5] relative">
+            <div className="overflow-hidden rounded-4xl ">
+              <div className="relative">
                 <img
                   src="./src/assets/images/carousel/guylin1.png"
                   alt="Guylain Nyembo"
@@ -77,7 +80,7 @@ export const AboutPage = () => {
                   <p className="text-lg text-gray-200">Fondateur de la DGN</p>
                 </div>
               </div>
-            </Card>
+            </div>
           </div>
         </div>
 
