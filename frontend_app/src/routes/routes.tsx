@@ -10,6 +10,7 @@ import { NotFoundPage } from "@/pages/not-found/not-found-page";
 import { AgentsPage } from "@/pages/agents/agents-page";
 import { CreateAgentPage } from "@/pages/agents/create-agent-page";
 import { AgentContributionPage } from "@/pages/agents/agent-contribution-page";
+import AboutPage from "@/pages/about/about-page";
 
 // Types
 export interface CustomRouteObject {
@@ -44,6 +45,12 @@ export const routes = [
     title: "Communiqués",
     description: "Consultez nos communiqués officiels",
     element: <CommuniquesPage />,
+  },
+  {
+    path: "/about",
+    title: "A propos",
+    description: "Découvrez qui nous sommes",
+    element: <AboutPage />,
   },
   {
     path: "/applications",

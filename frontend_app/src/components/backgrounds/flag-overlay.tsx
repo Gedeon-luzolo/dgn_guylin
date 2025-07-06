@@ -9,9 +9,6 @@ export function FlagOverlay() {
           className="h-full w-full object-cover opacity-40"
         />
       </div>
-
-      {/* Fond décoratif */}
-      <div className="absolute inset-0 -z-0 bg-gradient-to-r from-purple-600 via-blue-600 to-green-500 opacity-20" />
     </div>
   );
 }
