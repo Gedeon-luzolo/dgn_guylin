@@ -171,7 +171,7 @@ export const ChatModal = () => {
                     ? `inset-x-2 bottom-2 top-16 ${
                         isMinimized ? "h-14 top-auto" : ""
                       }`
-                    : `bottom-10 right-4 md:right-6 w-[90vw] sm:w-[400px] 
+                    : `bottom-6 right-4 md:right-6 w-[90vw] sm:w-[400px] 
                        ${isMinimized ? "h-16 w-72" : "h-[600px]"}`
                 }
                 rounded-2xl overflow-hidden border border-gray-100
@@ -182,13 +182,13 @@ export const ChatModal = () => {
                 className="relative flex items-center justify-between p-3 md:p-4 border-b bg-white"
                 layout
               >
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-3 pt-4">
                   <div className="relative">
                     <motion.div
                       className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-blue-600 via-purple-600 to-blue-600 flex items-center justify-center shadow-xl relative overflow-hidden"
                       whileHover={{ scale: 1.05, rotate: 5 }}
                     >
-                      <Brain className="w-5 h-5 md:w-6 md:h-6 text-white z-10" />
+                      <Brain className="size-5 md:size-8 text-white z-10" />
                       {/* Effet brillant */}
                       <motion.div
                         className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -skew-x-12"
@@ -246,16 +246,14 @@ export const ChatModal = () => {
 
               {/* Contenu du chat */}
               <AnimatePresence mode="wait">
-                {!isMinimized && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
-                    className="h-[calc(100%-4rem)] bg-gray-50"
-                  >
-                    <ChatInterface className="border-0 rounded-none h-full bg-transparent" />
-                  </motion.div>
-                )}
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  className="h-[calc(100%-4rem)] bg-gray-50"
+                >
+                  <ChatInterface className="border-0 rounded-none h-full bg-transparent" />
+                </motion.div>
               </AnimatePresence>
 
               {/* État minimisé */}

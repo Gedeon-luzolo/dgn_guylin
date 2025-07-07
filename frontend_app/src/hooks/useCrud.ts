@@ -1,3 +1,4 @@
+import { getErrorMessage } from "@/lib/getErrorMessage";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError, type AxiosInstance } from "axios";
 import { toast } from "sonner";
@@ -21,16 +22,6 @@ interface ApiError {
 // Hardcoded base URL
 // export const url = "";
 export const url = "http://localhost:3000";
-
-// Fonction utilitaire pour extraire le message d'erreur
-const getErrorMessage = (error: AxiosError<ApiError>): string => {
-  return (
-    error.response?.data?.message ||
-    error.response?.data?.error ||
-    error.message ||
-    "Une erreur inattendue s'est produite"
-  );
-};
 
 export function useCrud<T extends { [key: string]: any }>({
   endpoint,

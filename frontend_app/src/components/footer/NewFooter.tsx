@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import { NavbarItems } from "@/lib/NavbarItems";
 import flagOverlay from "@/assets/images/flag_overlay.png";
 import logoDgn from "@/assets/images/logo/logo_dgn.png";
-import { Button } from "../ui/button";
 
 const NewFooter: React.FC = () => {
   return (
@@ -147,14 +146,6 @@ const NewFooter: React.FC = () => {
                     </a>
                   </li>
                 </ul>
-
-                <div className="text-left mt-4">
-                  <Link to="/applications">
-                    <Button className=" bg-yellow-400 text-sm md:text-base rounded-2xl font-semibold text-blue-900 transition-colors hover:bg-yellow-300">
-                      NOS APPLICATIONS
-                    </Button>
-                  </Link>
-                </div>
               </div>
 
               {/* Section Mentions Légales */}
