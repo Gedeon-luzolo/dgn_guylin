@@ -193,13 +193,13 @@ export function AgentsPage() {
 
         {!isSearching && (
           <div className="text-center">
-            <p className="text-white/80 mb-2">
+            <p className="text-white mb-2">
               L'agent n'est pas encore enregistré ?
             </p>
             <Link to="/agents/create">
               <Button
                 variant="link"
-                className="text-yellow-400 hover:text-yellow-300 underline"
+                className="text-yellow-300 hover:text-yellow-400 underline"
               >
                 Veuillez créer son profil.
               </Button>

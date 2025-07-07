@@ -1,13 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import {
-  Send,
-  MessageSquare,
-  AlertCircle,
-  Sparkles,
-  Brain,
-  RefreshCw,
-} from "lucide-react";
+import { Send, AlertCircle, Bot } from "lucide-react";
 import { useChat } from "../../hooks/useChat";
 import { ChatMessage } from "./chat-message";
 import { Button } from "../ui/button";
@@ -71,32 +64,19 @@ export const ChatInterface = ({
   if (isLoadingHistory) {
     return (
       <Card
-        className={`h-[600px] flex items-center justify-center backdrop-blur-xl bg-white/80 border border-white/20 shadow-2xl ${className}`}
+        className={`h-full flex items-center justify-center bg-gray-50/50 ${className}`}
       >
-        <motion.div
-          className="flex flex-col items-center gap-6"
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <div className="relative">
-            <LoadingSpinner />
-            <motion.div
-              className="absolute inset-0 bg-gradient-to-r from-blue-500/20 to-purple-500/20 rounded-full blur-xl"
-              animate={{ scale: [1, 1.2, 1] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            />
-          </div>
+        <div className="flex flex-col items-center gap-4">
+          <LoadingSpinner />
           <div className="text-center">
-            <h3 className="font-semibold text-gray-800 mb-2 flex items-center gap-2 justify-center">
-              <Brain className="w-5 h-5 text-purple-600" />
-              Initialisation de Guylin
+            <h3 className="font-medium text-gray-800 mb-1">
+              Initialisation de l'assistant
             </h3>
-            <p className="text-gray-600 text-sm">
-              Préparation de votre assistant intelligent...
+            <p className="text-gray-500 text-sm">
+              Chargement de votre conversation...
             </p>
           </div>
-        </motion.div>
+        </div>
       </Card>
     );
   }
@@ -105,57 +85,25 @@ export const ChatInterface = ({
     <Card
       className={`flex flex-col h-full bg-transparent border-0 shadow-none overflow-hidden ${className}`}
     >
-      {/* Messages avec scrollbar personnalisée - Responsive optimisé */}
-      <div className="flex-1 overflow-y-auto p-3 md:p-4 space-y-3 md:space-y-4 scroll-smooth">
+      <div className="flex-1 overflow-y-auto p-4 space-y-4 bg-gray-50/50">
         {messages.length === 0 ? (
           <motion.div
-            className="flex flex-col items-center justify-center h-full text-center"
+            className="flex flex-col items-center justify-center h-full text-center px-4"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
+            transition={{ duration: 0.4 }}
           >
-            <motion.div
-              className="relative mb-6"
-              animate={{ rotate: 360 }}
-              transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
-            >
-              <div className="w-20 h-20 bg-gradient-to-br from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-full flex items-center justify-center backdrop-blur-sm">
-                <MessageSquare className="w-10 h-10 text-gray-400" />
-              </div>
-              <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-blue-500/10 to-purple-500/10 rounded-full blur-xl"
-                animate={{ scale: [1, 1.1, 1] }}
-                transition={{ duration: 3, repeat: Infinity }}
-              />
-            </motion.div>
-
-            <h3 className="font-bold text-xl mb-3 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-              Bonjour ! Je suis Guylin
-            </h3>
-            <p className="text-gray-600 text-sm max-w-sm leading-relaxed">
-              Votre assistant intelligent DGN. Posez-moi une question et
-              découvrez tout ce que je peux faire pour vous aider.
-            </p>
-
-            {/* Suggestions */}
-            <div className="mt-6 flex flex-wrap gap-2 justify-center">
-              {["Qui êtes-vous ?", "Services DGN", "Comment adhérer ?"].map(
-                (suggestion, i) => (
-                  <motion.button
-                    key={suggestion}
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.8 + i * 0.1 }}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => setInputMessage(suggestion)}
-                    className="px-3 py-1.5 bg-gradient-to-r from-blue-50 to-purple-50 text-gray-700 rounded-full text-xs font-medium border border-blue-200/50 hover:border-blue-300/70 transition-all backdrop-blur-sm"
-                  >
-                    {suggestion}
-                  </motion.button>
-                )
-              )}
+            <div className="mb-6 p-4 bg-primary/10 rounded-full">
+              <Bot className="w-8 h-8 text-primary" />
             </div>
+
+            <h3 className="font-semibold text-xl mb-2 text-gray-900">
+              Bonjour, je suis votre assistant DGN
+            </h3>
+            <p className="text-gray-600 text-sm max-w-sm">
+              Je suis là pour vous aider. N'hésitez pas à me poser vos
+              questions.
+            </p>
           </motion.div>
         ) : (
           <AnimatePresence mode="popLayout">
@@ -169,55 +117,45 @@ export const ChatInterface = ({
           </AnimatePresence>
         )}
 
-        {/* Indicateur de frappe premium */}
         <AnimatePresence>
           {isSending && (
             <motion.div
-              initial={{ opacity: 0, y: 20, scale: 0.9 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, y: -10, scale: 0.9 }}
-              className="flex items-center gap-4 p-4"
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              className="flex items-center gap-3 p-3"
             >
-              <motion.div
-                className="relative w-12 h-12 bg-gradient-to-br from-purple-500 via-pink-500 to-rose-500 rounded-full flex items-center justify-center shadow-lg"
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 1.5, repeat: Infinity }}
-              >
-                <Brain className="w-6 h-6 text-white" />
+              <div className="w-8 h-8 bg-primary/10 rounded-full flex items-center justify-center">
+                <Bot className="w-4 h-4 text-primary" />
+              </div>
+              <div className="flex space-x-1">
                 <motion.div
-                  className="absolute inset-0 bg-gradient-to-r from-transparent via-white/30 to-transparent rounded-full -skew-x-12"
-                  animate={{ x: ["-200%", "200%"] }}
+                  className="w-2 h-2 bg-primary rounded-full"
+                  animate={{ scale: [1, 1.2, 1] }}
                   transition={{
-                    duration: 1.5,
+                    duration: 1,
                     repeat: Infinity,
-                    repeatDelay: 0.5,
+                    repeatDelay: 0.2,
                   }}
                 />
-              </motion.div>
-
-              <div className="flex flex-col">
-                <div className="flex items-center gap-2 mb-1">
-                  <div className="flex space-x-1">
-                    <motion.div
-                      className="w-2 h-2 bg-purple-500 rounded-full animate-typing-dots"
-                      style={{ animationDelay: "0ms" }}
-                    />
-                    <motion.div
-                      className="w-2 h-2 bg-pink-500 rounded-full animate-typing-dots"
-                      style={{ animationDelay: "200ms" }}
-                    />
-                    <motion.div
-                      className="w-2 h-2 bg-rose-500 rounded-full animate-typing-dots"
-                      style={{ animationDelay: "400ms" }}
-                    />
-                  </div>
-                  <span className="text-sm font-medium text-gray-700">
-                    Guylin réfléchit
-                  </span>
-                </div>
-                <p className="text-xs text-gray-500">
-                  Analyse en cours avec l'IA...
-                </p>
+                <motion.div
+                  className="w-2 h-2 bg-primary rounded-full"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{
+                    duration: 1,
+                    repeat: Infinity,
+                    repeatDelay: 0.3,
+                  }}
+                />
+                <motion.div
+                  className="w-2 h-2 bg-primary rounded-full"
+                  animate={{ scale: [1, 1.2, 1] }}
+                  transition={{
+                    duration: 1,
+                    repeat: Infinity,
+                    repeatDelay: 0.4,
+                  }}
+                />
               </div>
             </motion.div>
           )}
@@ -226,71 +164,40 @@ export const ChatInterface = ({
         <div ref={messagesEndRef} />
       </div>
 
-      {/* Zone de saisie responsive optimisée */}
-      <motion.div
-        className="p-3 md:p-4 bg-gradient-to-r from-gray-50/60 via-white/80 to-gray-50/60 backdrop-blur-sm"
-        initial={{ opacity: 0.8 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.15 }}
-      >
+      <div className="p-4 bg-white border-t">
         {error && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.2 }}
-            className="flex items-center gap-2 text-red-600 text-xs md:text-sm mb-3 p-2 md:p-3 bg-gradient-to-r from-red-50/80 to-rose-50/80 border border-red-200/50 rounded-lg md:rounded-xl backdrop-blur-sm"
+            className="flex items-center gap-2 text-red-600 text-sm mb-3 p-3 bg-red-50 rounded-lg"
           >
-            <AlertCircle className="w-3 h-3 md:w-4 md:h-4 flex-shrink-0" />
-            <span className="font-medium">{error}</span>
+            <AlertCircle className="w-4 h-4 flex-shrink-0" />
+            <span>{error}</span>
           </motion.div>
         )}
 
-        <div className="flex gap-2 md:gap-3">
-          <div className="relative flex-1">
-            <Input
-              ref={inputRef}
-              value={inputMessage}
-              onChange={(e) => setInputMessage(e.target.value)}
-              onKeyPress={handleKeyPress}
-              placeholder="Écrivez votre message à Guylin..."
-              disabled={isSending}
-              className="w-full pl-3 md:pl-4 pr-10 md:pr-12 py-2.5 md:py-3 bg-white/80 backdrop-blur-sm border border-gray-200/50 rounded-lg md:rounded-xl text-gray-800 placeholder-gray-500 focus:border-blue-400/70 focus:ring-2 md:focus:ring-4 focus:ring-blue-400/20 transition-all duration-300 shadow-sm text-sm md:text-base"
-            />
-            <motion.div
-              className="absolute right-2 md:right-3 top-1/2 -translate-y-1/2"
-              animate={{ opacity: inputMessage.trim() ? 1 : 0.5 }}
-            >
-              <Sparkles className="w-3 h-3 md:w-4 md:h-4 text-purple-400" />
-            </motion.div>
-          </div>
+        <div className="flex gap-2">
+          <Input
+            ref={inputRef}
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            onKeyPress={handleKeyPress}
+            placeholder="Écrivez votre message..."
+            disabled={isSending}
+            className="flex-1"
+          />
 
-          <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-            <Button
-              onClick={handleSendMessage}
-              disabled={!inputMessage.trim() || isSending}
-              className="px-3 md:px-6 py-2.5 md:py-3 bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white rounded-lg md:rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed backdrop-blur-sm border border-white/20"
-            >
-              {isSending ? (
-                <motion.div
-                  animate={{ rotate: 360 }}
-                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
-                >
-                  <RefreshCw className="w-4 h-4 md:w-5 md:h-5" />
-                </motion.div>
-              ) : (
-                <motion.div
-                  whileHover={{ x: 2 }}
-                  transition={{ type: "spring", stiffness: 400 }}
-                >
-                  <Send className="w-4 h-4 md:w-5 md:h-5" />
-                </motion.div>
-              )}
-              <span className="hidden md:inline ml-2 font-medium">Envoyer</span>
-            </Button>
-          </motion.div>
+          <Button
+            onClick={handleSendMessage}
+            disabled={!inputMessage.trim() || isSending}
+            size="icon"
+            className="shrink-0"
+          >
+            <Send className="w-4 h-4" />
+          </Button>
         </div>
-      </motion.div>
+      </div>
     </Card>
   );
 };

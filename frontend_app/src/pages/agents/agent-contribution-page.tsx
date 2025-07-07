@@ -51,12 +51,12 @@ export const AgentContributionPage = () => {
 
   return (
     <div>
-      <FlagOverlay />
+      <FlagOverlay className="fixed" />
       <div className="relative py-20 px-4 sm:px-6 lg:px-8">
         <BackButton to="/agents" className="mt-6 mr-10" />
 
         <div className="max-w-2xl mx-auto">
-          <Card className="bg-white/10 backdrop-blur-lg border-white/20 p-6 rounded-3xl">
+          <Card className="bg-white/5 backdrop-blur-lg border-white/20 p-6 rounded-3xl">
             {/* En-tête du profil */}
             <div className="text-center mb-8">
               <div className="size-24 mx-auto mb-4 rounded-full overflow-hidden bg-white/20 ring-4 ring-white/20">

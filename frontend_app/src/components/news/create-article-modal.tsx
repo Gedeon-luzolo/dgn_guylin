@@ -10,14 +10,6 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { newsCatecory } from "@/types/newsType";
 import { useCrud } from "@/hooks/useCrud";
 
 interface CreateArticleModalProps {
@@ -75,7 +67,7 @@ export const CreateArticleModal = ({
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    formData.append("authorId", "1");
+    formData.append("authorId", "eb777ac0-50c0-4ae4-a95f-c880e3e215fd");
     formData.append("authorName", "Admin");
     formData.append("authorRole", "admin");
 
@@ -134,22 +126,6 @@ export const CreateArticleModal = ({
               placeholder="Titre de l'article"
               required
             />
-          </div>
-
-          <div className="space-y-2">
-            <Label htmlFor="category">Catégorie</Label>
-            <Select name="category" required>
-              <SelectTrigger>
-                <SelectValue placeholder="Sélectionnez une catégorie" />
-              </SelectTrigger>
-              <SelectContent>
-                {newsCatecory.map((category) => (
-                  <SelectItem key={category} value={category}>
-                    {category}
-                  </SelectItem>
-                ))}
-              </SelectContent>
-            </Select>
           </div>
 
           <div className="space-y-2">

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
-import { MessageSquare, X, Sparkles, History, Brain, Zap } from "lucide-react";
+import { MessageSquare, X, Sparkles, Zap, Brain } from "lucide-react";
 import { ChatInterface } from "./chat-interface";
 import { Button } from "../ui/button";
 
@@ -29,23 +29,19 @@ export const ChatModal = () => {
   };
 
   const buttonVariants: Variants = {
-    initial: { scale: 0, rotate: -180, opacity: 0 },
+    initial: { scale: 0, opacity: 0 },
     animate: {
       scale: 1,
-      rotate: 0,
       opacity: 1,
       transition: {
-        type: "spring" as const,
+        type: "spring",
         stiffness: 300,
         damping: 20,
-        delay: 0.5,
       },
     },
-    tap: { scale: 0.92 },
+    tap: { scale: 0.95 },
     hover: {
       scale: 1.05,
-      rotate: 5,
-      boxShadow: "0 25px 50px rgba(59, 130, 246, 0.5)",
       transition: { duration: 0.2 },
     },
   };
@@ -53,40 +49,32 @@ export const ChatModal = () => {
   const modalVariants: Variants = {
     hidden: {
       opacity: 0,
-      scale: 0.85,
-      y: 100,
-      filter: "blur(20px)",
-      rotateX: -15,
+      scale: 0.95,
+      y: 20,
     },
     visible: {
       opacity: 1,
       scale: 1,
       y: 0,
-      filter: "blur(0px)",
-      rotateX: 0,
       transition: {
-        type: "spring" as const,
-        stiffness: 400,
+        type: "spring",
+        stiffness: 300,
         damping: 30,
-        mass: 0.8,
       },
     },
     exit: {
       opacity: 0,
-      scale: 0.85,
-      y: 100,
-      filter: "blur(20px)",
-      rotateX: 15,
+      scale: 0.95,
+      y: 20,
       transition: {
-        duration: 0.3,
-        ease: "easeInOut",
+        duration: 0.2,
       },
     },
   };
 
   return (
     <>
-      {/* Bouton flottant premium avec effet holographique - Caché quand modal ouvert */}
+      {/* Bouton flottant */}
       <AnimatePresence>
         {!isOpen && (
           <motion.div
@@ -156,60 +144,48 @@ export const ChatModal = () => {
         )}
       </AnimatePresence>
 
-      {/* Modal glassmorphing */}
+      {/* Modal */}
       <AnimatePresence>
         {isOpen && (
           <>
-            {/* Overlay premium avec effet de profondeur */}
+            {/* Overlay */}
             <motion.div
-              initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
-              animate={{ opacity: 1, backdropFilter: "blur(12px)" }}
-              exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
-              transition={{ duration: 0.1 }}
-              className="fixed inset-0 bg-gradient-to-br from-black/30 via-black/20 to-black/30 z-[90]"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2 }}
+              className="fixed inset-0 bg-black/25 backdrop-blur-sm z-[90]"
               onClick={toggleChat}
             />
 
-            {/* Modal principal responsive avec design premium */}
+            {/* Modal principal */}
             <motion.div
               variants={modalVariants}
               initial="hidden"
               animate="visible"
               exit="exit"
               className={`
-                fixed z-[95] overflow-hidden
+                fixed z-[95] bg-white shadow-2xl
                 ${
                   isMobile
-                    ? `
-                    inset-x-2 bottom-2 top-16
-                    ${isMinimized ? "h-14 top-auto" : ""}
-                  `
-                    : `
-                    bottom-10 right-4 md:right-6 w-[90vw] sm:w-[440px] max-w-[440px]
-                    ${
-                      isMinimized
-                        ? "h-20 w-80 md:w-96"
-                        : "h-[85vh] max-h-[560px]"
-                    }
-                  `
+                    ? `inset-x-2 bottom-2 top-16 ${
+                        isMinimized ? "h-14 top-auto" : ""
+                      }`
+                    : `bottom-10 right-4 md:right-6 w-[90vw] sm:w-[400px] 
+                       ${isMinimized ? "h-16 w-72" : "h-[600px]"}`
                 }
-                bg-white/95 backdrop-blur-3xl
-                border border-white/40 rounded-2xl md:rounded-3xl
-                shadow-[0_25px_50px_-12px_rgba(0,0,0,0.25)]
-                before:absolute before:inset-0 before:rounded-2xl md:before:rounded-3xl
-                before:bg-gradient-to-br before:from-white/50 before:via-white/30 before:to-white/10
-                before:pointer-events-none
+                rounded-2xl overflow-hidden border border-gray-100
               `}
             >
               {/* En-tête premium responsive avec glassmorphisme avancé */}
               <motion.div
-                className="relative flex items-center justify-between p-3 md:p-4 border-b border-white/30 bg-gradient-to-r from-blue-50/60 via-purple-50/60 to-pink-50/60 backdrop-blur-sm"
+                className="relative flex items-center justify-between p-3 md:p-4 border-b bg-white"
                 layout
               >
-                <div className="flex items-center gap-2 md:gap-3">
+                <div className="flex items-center gap-3">
                   <div className="relative">
                     <motion.div
-                      className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-blue-600 via-purple-600 to-pink-600 flex items-center justify-center shadow-xl relative overflow-hidden"
+                      className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-gradient-to-br from-blue-600 via-purple-600 to-blue-600 flex items-center justify-center shadow-xl relative overflow-hidden"
                       whileHover={{ scale: 1.05, rotate: 5 }}
                     >
                       <Brain className="w-5 h-5 md:w-6 md:h-6 text-white z-10" />
@@ -233,15 +209,11 @@ export const ChatModal = () => {
                     >
                       <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-emerald-600 rounded-full" />
                     </motion.div>
-
-                    {/* Particules autour de l'avatar */}
-                    <Sparkles className="absolute -top-0.5 -left-0.5 md:-top-1 md:-left-1 w-2.5 h-2.5 md:w-3 md:h-3 text-yellow-400 animate-pulse" />
-                    <Zap className="absolute -top-0.5 -right-0.5 md:-top-1 md:-right-1 w-2.5 h-2.5 md:w-3 md:h-3 text-blue-400 animate-ping" />
                   </div>
 
                   <div>
                     <h3 className="font-bold text-base md:text-lg text-gray-800 flex items-center gap-1.5 md:gap-2">
-                      Guylin AI
+                      Rafiki IA
                       <motion.div
                         animate={{ rotate: [0, 10, -10, 0] }}
                         transition={{
@@ -254,8 +226,7 @@ export const ChatModal = () => {
                       </motion.div>
                     </h3>
                     <p className="text-xs md:text-sm text-gray-600 flex items-center gap-1">
-                      <div className="w-1.5 h-1.5 md:w-2 md:h-2 bg-emerald-400 rounded-full animate-pulse" />
-                      Assistant intelligent • En ligne
+                      Assistant intelligent
                     </p>
                   </div>
                 </div>
@@ -273,63 +244,21 @@ export const ChatModal = () => {
                 </div>
               </motion.div>
 
-              {/* Contenu du chat avec animation */}
+              {/* Contenu du chat */}
               <AnimatePresence mode="wait">
                 {!isMinimized && (
                   <motion.div
-                    initial={{ height: 0, opacity: 0 }}
-                    animate={{
-                      height: "auto",
-                      opacity: 1,
-                      transition: {
-                        height: {
-                          type: "spring" as const,
-                          stiffness: 300,
-                          damping: 30,
-                        },
-                        opacity: { delay: 0.1 },
-                      },
-                    }}
-                    exit={{
-                      height: 0,
-                      opacity: 0,
-                      transition: {
-                        height: { duration: 0.2 },
-                        opacity: { duration: 0.1 },
-                      },
-                    }}
-                    className="overflow-hidden"
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={{ opacity: 0 }}
+                    className="h-[calc(100%-4rem)] bg-gray-50"
                   >
-                    <div
-                      className={`relative ${
-                        isMobile ? "h-[calc(100vh-8rem)]" : "h-[620px]"
-                      }`}
-                    >
-                      {/* Gradient overlay pour l'effet glassmorphing */}
-                      <div className="absolute inset-0 bg-gradient-to-br from-blue-50/20 via-transparent to-purple-50/20 pointer-events-none" />
-
-                      <ChatInterface className="border-0 rounded-none h-full bg-transparent" />
-                    </div>
+                    <ChatInterface className="border-0 rounded-none h-full bg-transparent" />
                   </motion.div>
                 )}
               </AnimatePresence>
 
-              {/* Indicateur de minimisation */}
-              {isMinimized && (
-                <motion.div
-                  initial={{ opacity: 0 }}
-                  animate={{ opacity: 1 }}
-                  className="flex items-center justify-center h-6 md:h-8 text-xs md:text-sm text-gray-600"
-                >
-                  <div className="flex items-center gap-1.5 md:gap-2">
-                    <History className="w-3 h-3 md:w-4 md:h-4 text-purple-500" />
-                    <span>Chat avec historique</span>
-                  </div>
-                </motion.div>
-              )}
-
-              {/* Glow effect */}
-              <div className="absolute -inset-1 bg-gradient-to-r from-blue-500/20 via-purple-500/20 to-pink-500/20 rounded-2xl blur-xl -z-10 opacity-60" />
+              {/* État minimisé */}
             </motion.div>
           </>
         )}

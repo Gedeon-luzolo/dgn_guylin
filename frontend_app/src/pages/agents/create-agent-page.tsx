@@ -80,7 +80,7 @@ export const CreateAgentPage = () => {
               FORMULAIRE D'ENREGISTREMENT D'AGENT
             </h1>
 
-            <div className="bg-white/10 backdrop-blur-lg border border-white/20 rounded-3xl p-6">
+            <div className="bg-white/5 backdrop-blur-lg border border-white/20 rounded-3xl p-6">
               <form action={handleSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   {/* Nom */}

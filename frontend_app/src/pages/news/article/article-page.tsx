@@ -160,20 +160,23 @@ export const ArticlePage = () => {
                 <Avatar className="w-12 h-12 border-2 border-white/20">
                   <AvatarImage
                     src={
-                      article.author.photo
+                      article.author?.photo
                         ? getImageUrl(article.author.photo as unknown as string)
                         : undefined
                     }
-                    alt={`${article.author.prenom} ${article.author.nom}`}
+                    alt={`${article.author?.prenom || ""} ${
+                      article.author?.nom || ""
+                    }`}
                   />
                   <AvatarFallback>
-                    {article.author.prenom[0]}
-                    {article.author.nom[0]}
+                    {article.author?.prenom?.[0] || ""}
+                    {article.author?.nom?.[0] || ""}
                   </AvatarFallback>
                 </Avatar>
                 <div>
                   <p className="font-medium text-white">
-                    {article.author.prenom} {article.author.nom}
+                    {article.author?.prenom || "Anonyme"}{" "}
+                    {article.author?.nom || ""}
                   </p>
                   <p className="text-sm text-white/80">
                     {formatDate(article.createdAt)}
