@@ -8,7 +8,6 @@ import {
   Delete,
   UseInterceptors,
   UploadedFiles,
-  Query,
   Res,
 } from "@nestjs/common";
 import { NewsService } from "./news.service";
@@ -33,10 +32,7 @@ export class NewsController {
   }
 
   @Get()
-  findAll(@Query("category") category?: string) {
-    if (category) {
-      return this.newsService.findByCategory(category);
-    }
+  findAll() {
     return this.newsService.findAll();
   }
 

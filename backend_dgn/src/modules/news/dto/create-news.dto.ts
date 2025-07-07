@@ -18,10 +18,6 @@ export class CreateNewsDto {
   content: string;
 
   @IsString()
-  @IsNotEmpty()
-  category: string;
-
-  @IsString()
   @IsOptional()
   readTime?: string;
 

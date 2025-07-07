@@ -22,9 +22,6 @@ export class News {
   @Column("text")
   content: string;
 
-  @Column()
-  category: string;
-
   @ManyToOne(() => Member, { eager: true })
   @JoinColumn()
   author: Member;

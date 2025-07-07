@@ -35,7 +35,6 @@ export class NewsService {
     const news = this.newsRepository.create({
       title: createNewsDto.title,
       content: createNewsDto.content,
-      category: createNewsDto.category,
       author,
     });
 
@@ -83,6 +82,7 @@ export class NewsService {
 
   async findAll(): Promise<News[]> {
     return this.newsRepository.find({
+      relations: ["author", "images"],
       order: {
         createdAt: "DESC",
       },
@@ -178,14 +178,5 @@ export class NewsService {
     const news = await this.findOne(id);
     news.commentsCount += 1;
     return this.newsRepository.save(news);
-  }
-
-  async findByCategory(category: string): Promise<News[]> {
-    return this.newsRepository.find({
-      where: { category },
-      order: {
-        createdAt: "DESC",
-      },
-    });
   }
 }
