@@ -28,7 +28,7 @@ export const AboutPage = () => {
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Text Content */}
           <div>
-            <div className="p-8">
+            <div className="p-6">
               <p className="text-lg text-gray-700 text-justify dark:text-gray-300">
                 La{" "}
                 <span className="font-semibold text-blue-800 dark:text-blue-400">
@@ -43,7 +43,7 @@ export const AboutPage = () => {
               </p>
             </div>
 
-            <div className="p-8">
+            <div className="p-6">
               <div className="flex items-center mb-4">
                 <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
                   <span className="text-2xl">🎯</span>
@@ -62,16 +62,38 @@ export const AboutPage = () => {
                 de l'État sur l'émergence de la Nation.
               </p>
             </div>
+
+            <div className="p-6">
+              <div className="flex items-center mb-4">
+                <div className="w-12 h-12 flex items-center justify-center rounded-full bg-blue-100 dark:bg-blue-900">
+                  <span className="text-2xl">🧭</span>
+                </div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white ml-4">
+                  Nos Objectifs
+                </h2>
+              </div>
+              <p className="text-lg text-gray-700 dark:text-gray-300  text-justify leading-relaxed">
+                Promouvoir la vision, les actions et les valeurs incarnées par
+                le Président de la République ; Conscientiser la jeunesse sur
+                son rôle dans la construction du pays ; Encourager
+                l’autonomisation des jeunes et des femmes à travers
+                l’entrepreneuriat, l’innovation, la formation et la santé ;
+                Appuyer les initiatives locales de développement rural et urbain
+                ; Lutter contre la pauvreté, l’analphabétisme, le tribalisme et
+                l’exclusion sociale ; Défendre les causes liées à
+                l’environnement, aux droits humains et à la bonne gouvernance.
+              </p>
+            </div>
           </div>
 
           {/* Image Section */}
-          <div className="relative">
+          <div className="relative float-right">
             <div className="overflow-hidden rounded-4xl ">
               <div className="relative">
                 <img
                   src="./src/assets/images/guylin/guylin-about.jpg"
                   alt="Guylain Nyembo"
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-cover "
                 />
                 <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent p-8">
                   <h3 className="text-2xl font-bold text-white mb-2">
@@ -83,8 +105,6 @@ export const AboutPage = () => {
             </div>
           </div>
         </div>
-
-   
 
         {/* Ethical Engagement Section */}
         <div className="mt-16">
