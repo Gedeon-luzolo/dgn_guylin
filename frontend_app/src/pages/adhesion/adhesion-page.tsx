@@ -9,6 +9,13 @@ import { useNavigate, useLocation } from "react-router-dom";
 import { ImagePlusIcon } from "lucide-react";
 import { CustomSelect, type SelectOption } from "@/components/ui/custom-select";
 import { RDC_PROVINCES } from "@/lib/provinceRdc";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+} from "@/components/ui/select";
+import { SelectLabel } from "@radix-ui/react-select";
 
 export const AdhesionPage: React.FC = () => {
   const navigate = useNavigate();
@@ -64,10 +71,6 @@ export const AdhesionPage: React.FC = () => {
         <Card className="bg-white/10 backdrop-blur-lg border-white/20">
           <CardContent className="px-8">
             <form action={handleSubmit} className="space-y-6">
-              {/* Champ caché pour le type de membre */}
-              {/* {typeMembre && (
-                <input type="hidden" name="qualiteMembre" value={typeMembre} />
-              )} */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 {/* Nom */}
                 <div className="space-y-2">
@@ -167,6 +170,18 @@ export const AdhesionPage: React.FC = () => {
                     className="border-white/20 bg-white/10 text-white placeholder-white/50 focus:ring-yellow-500 rounded-xl"
                     required
                   />
+                </div>
+                <div className="space-y-2">
+                  <Label htmlFor="genre" className="text-white">
+                    Sexe:
+                  </Label>
+                  <Select name="genre">
+                    <SelectTrigger>Sexe</SelectTrigger>
+                    <SelectContent>
+                      <SelectItem value="Homme">Homme</SelectItem>
+                      <SelectItem value="Femme">Femme</SelectItem>
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 

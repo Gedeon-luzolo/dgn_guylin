@@ -15,12 +15,12 @@ export const multerConfig: MulterOptions = {
     callback: (error: Error | null, acceptFile: boolean) => void
   ) => {
     if (!file.originalname.match(/\.(jpg|jpeg|png|gif|webp)$/)) {
-      return callback(new Error("Only image files are allowed!"), false);
+      return callback(new Error("Seul les images sont autorisées!"), false);
     }
     callback(null, true);
   },
 
   limits: {
-    fileSize: 5 * 1024 * 1024, // 5MB max file size
+    fileSize: 10 * 1024 * 1024, // 10MB max file size
   },
 };

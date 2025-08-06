@@ -1,4 +1,4 @@
-import { url } from "@/hooks/useCrud";
+import { url } from "@/lib/axios";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 
@@ -12,7 +12,3 @@ export const getImageUrl = (imagePath: string) => {
     ? imagePath
     : `${url}/uploads/${imagePath}`;
 };
-
-// export const getImageOneUrl = (user: string) => {
-// return {`${url}/uploads/${user.photo}`}
-// };

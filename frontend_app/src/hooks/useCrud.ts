@@ -1,17 +1,19 @@
-import { getErrorMessage } from "@/lib/getErrorMessage";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import axios, { AxiosError, type AxiosInstance } from "axios";
+import { AxiosError } from "axios";
 import { toast } from "sonner";
-// import { getToken } from "../api/ServiceHost";
+import { getErrorMessage } from "@/lib/getErrorMessage";
+import { api } from "@/lib/axios";
 
 interface CrudOptions<T> {
   endpoint: string;
   idField?: keyof T;
   queryKey?: string;
   queryKey2?: string;
-  queryKey3?: string;
   message?: string;
-  contentType?: string;
+}
+
+interface QueryParams {
+  [key: string]: string | number | boolean | undefined;
 }
 
 interface ApiError {
@@ -19,34 +21,17 @@ interface ApiError {
   message?: string;
 }
 
-// Hardcoded base URL
-// export const url = "";
-export const url = "http://localhost:3000";
-
 export function useCrud<T extends { [key: string]: any }>({
   endpoint,
   idField = "id" as keyof T,
   queryKey,
   queryKey2,
-  queryKey3,
   message,
-}: //   contentType = "application/json",
-CrudOptions<T>) {
+}: CrudOptions<T>) {
   const queryClient = useQueryClient();
 
   // Use queryKey if provided, otherwise fall back to endpoint
   const resourceKey = queryKey || endpoint;
-
-  const getApi = (): AxiosInstance => {
-    // const token = getToken();
-    return axios.create({
-      baseURL: `${url}/api`,
-      //   headers: {
-      //     Authorization: token ? `Bearer ${token}` : "",
-      //     "Content-Type": contentType,
-      //   },
-    });
-  };
 
   // GET all items
   const useList = () => {
@@ -54,7 +39,7 @@ CrudOptions<T>) {
       queryKey: [resourceKey],
       queryFn: async (): Promise<T[]> => {
         try {
-          const { data } = await getApi().get<T[]>(endpoint);
+          const { data } = await api.get<T[]>(endpoint);
           return data;
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -67,12 +52,32 @@ CrudOptions<T>) {
     });
   };
 
-  const useFetch = () => {
+  // GET all items with query parameters
+  const useListWithParams = (params: QueryParams) => {
     return useQuery({
-      queryKey: [resourceKey],
+      queryKey: [resourceKey, params],
+      queryFn: async (): Promise<T[]> => {
+        try {
+          const { data } = await api.get<T[]>(endpoint, { params });
+          return data;
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            const errorMsg = getErrorMessage(error);
+            toast.error(errorMsg);
+          }
+          throw error;
+        }
+      },
+    });
+  };
+
+  // GET single item with query parameters
+  const useFetchWithParams = (params: QueryParams) => {
+    return useQuery({
+      queryKey: [resourceKey, params],
       queryFn: async (): Promise<T> => {
         try {
-          const { data } = await getApi().get<T>(endpoint);
+          const { data } = await api.get<T>(endpoint, { params });
           return data;
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -91,7 +96,7 @@ CrudOptions<T>) {
       queryKey: [resourceKey, id],
       queryFn: async (): Promise<T> => {
         try {
-          const { data } = await getApi().get<T>(`${endpoint}/${id}`);
+          const { data } = await api.get<T>(`${endpoint}/${id}`);
           return data;
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -108,7 +113,7 @@ CrudOptions<T>) {
   const useCreate = () => {
     return useMutation<T, AxiosError<ApiError>, Omit<T, typeof idField>>({
       mutationFn: async (newItem) => {
-        const { data } = await getApi().post<T>(endpoint, newItem);
+        const { data } = await api.post<T>(endpoint, newItem);
         return data;
       },
       onSuccess: () => {
@@ -119,7 +124,7 @@ CrudOptions<T>) {
       onError: (error: AxiosError<ApiError>) => {
         const errorMsg = getErrorMessage(error);
         toast.error(errorMsg);
-        throw error; // Propager l'erreur pour la gestion dans le composant
+        throw error;
       },
     });
   };
@@ -129,10 +134,7 @@ CrudOptions<T>) {
     return useMutation<T, AxiosError<ApiError>, T>({
       mutationFn: async (updatedItem) => {
         const id = updatedItem[idField];
-        const { data } = await getApi().put<T>(
-          `${endpoint}/${id}`,
-          updatedItem
-        );
+        const { data } = await api.put<T>(`${endpoint}/${id}`, updatedItem);
         return data;
       },
       onSuccess: (_, variables) => {
@@ -140,7 +142,6 @@ CrudOptions<T>) {
           queryKey: [resourceKey, variables[idField]],
         });
         queryClient.invalidateQueries({ queryKey: [queryKey2] });
-        queryClient.invalidateQueries({ queryKey: [queryKey3] });
         toast.success(`${message} modifié avec succès`);
       },
       onError: (error: AxiosError<ApiError>) => {
@@ -155,7 +156,24 @@ CrudOptions<T>) {
   const useDelete = () => {
     return useMutation<void, AxiosError<ApiError>, string | number>({
       mutationFn: async (id) => {
-        await getApi().delete(`${endpoint}/${id}`);
+        await api.delete(`${endpoint}/${id}`);
+      },
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: [resourceKey] });
+        toast.success(`${message} supprimée avec succès`);
+      },
+      onError: (error: AxiosError<ApiError>) => {
+        const errorMsg = getErrorMessage(error);
+        toast.error(errorMsg);
+        throw error;
+      },
+    });
+  };
+
+  const useDeleteAll = () => {
+    return useMutation<void, AxiosError<ApiError>, void>({
+      mutationFn: async () => {
+        await api.delete(endpoint);
       },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [resourceKey] });
@@ -170,11 +188,13 @@ CrudOptions<T>) {
   };
 
   return {
-    useFetch,
+    useFetchWithParams,
     useList,
+    useListWithParams,
     useGet,
     useCreate,
     useUpdate,
     useDelete,
+    useDeleteAll,
   };
 }
