@@ -6,8 +6,6 @@ import { Repository } from "typeorm";
 import { unlink } from "fs/promises";
 import { join } from "path";
 import { ImageProcessingService } from "src/common/services/image-processing.service";
-import { User } from "../users/entities/user.entity";
-import { UserData } from "../users/entities/user.interface";
 
 @Injectable()
 export class AgentsService {
@@ -15,8 +13,6 @@ export class AgentsService {
   constructor(
     @InjectRepository(Agent)
     private readonly agentRepository: Repository<Agent>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
     private readonly imageProcessingService: ImageProcessingService
   ) {}
 
@@ -27,14 +23,16 @@ export class AgentsService {
   async create(createAgentDto: CreateAgentDto, photo?: Express.Multer.File) {
     let photoFilename = "default.png";
 
-    const existingUser = await this.userRepository.findOne({
+    // Vérifier si un agent avec ce téléphone existe déjà
+    const existingAgent = await this.agentRepository.findOne({
       where: { telephone: createAgentDto.telephone },
     });
 
-    if (existingUser) {
+    if (existingAgent) {
+      this.logger.warn("Un agent avec ce numéro de téléphone existe déjà");
       return {
         error: "Erreur serveur",
-        message: "Un utilisateur avec ce numéro de téléphone existe déjà",
+        message: "Un agent avec ce numéro de téléphone existe déjà",
       };
     }
 
@@ -42,28 +40,29 @@ export class AgentsService {
       photoFilename = await this.imageProcessingService.processImage(photo);
     }
 
-    const userDto: UserData = {
+    // Créer directement l'agent sans utilisateur associé
+    const agent = this.agentRepository.create({
       nom: createAgentDto.nom,
       postNom: createAgentDto.postNom,
       prenom: createAgentDto.prenom,
+      genre: createAgentDto.genre,
       telephone: createAgentDto.telephone,
       photo: photoFilename,
-      genre: createAgentDto.genre,
-    };
-
-    const user = this.userRepository.create(userDto);
-    const savedUser = await this.userRepository.save(user);
-
-    const agent = this.agentRepository.create({
-      user: savedUser,
       fonction: createAgentDto.fonction,
       societe: createAgentDto.societe,
       appartenancePolitique: createAgentDto.appartenancePolitique,
       niveauEtudes: createAgentDto.niveauEtudes,
       isActive: true,
+      user: null, // Pas d'utilisateur associé par défaut
     });
 
-    return await this.agentRepository.save(agent);
+    try {
+      const savedAgent = await this.agentRepository.save(agent);
+      return savedAgent;
+    } catch (error) {
+      this.logger.error("Error saving to database:", error);
+      throw error;
+    }
   }
 
   async findOne(id: string): Promise<Agent> {
@@ -72,7 +71,7 @@ export class AgentsService {
       relations: ["user"],
     });
     if (!agent) {
-      throw new NotFoundException(`Agent with ID "${id}" not found`);
+      throw new NotFoundException(`Agent avec l'ID "${id}" non trouvé`);
     }
     return agent;
   }
@@ -83,12 +82,12 @@ export class AgentsService {
     photo?: Express.Multer.File
   ): Promise<Agent> {
     const agent = await this.findOne(id);
-    let photoFilename = agent.user.photo;
+    let photoFilename = agent.photo || "default.png";
 
     if (photo) {
-      if (agent.user.photo && agent.user.photo !== "default.png") {
+      if (agent.photo && agent.photo !== "default.png") {
         try {
-          await unlink(join(process.cwd(), "uploads", agent.user.photo));
+          await unlink(join(process.cwd(), "uploads", agent.photo));
         } catch (error) {
           console.error("Error deleting old photo:", error);
         }
@@ -96,19 +95,14 @@ export class AgentsService {
       photoFilename = await this.imageProcessingService.processImage(photo);
     }
 
-    const userUpdateDto: UserData = {
+    // Mettre à jour directement les champs de l'agent
+    Object.assign(agent, {
       nom: updateAgentDto.nom,
       postNom: updateAgentDto.postNom,
       prenom: updateAgentDto.prenom,
+      genre: updateAgentDto.genre,
       telephone: updateAgentDto.telephone,
       photo: photoFilename,
-      genre: updateAgentDto.genre,
-    };
-
-    Object.assign(agent.user, userUpdateDto);
-    await this.userRepository.save(agent.user);
-
-    Object.assign(agent, {
       fonction: updateAgentDto.fonction,
       societe: updateAgentDto.societe,
       appartenancePolitique: updateAgentDto.appartenancePolitique,
@@ -121,9 +115,9 @@ export class AgentsService {
   async remove(id: string): Promise<void> {
     const agent = await this.findOne(id);
 
-    if (agent.user.photo && agent.user.photo !== "default.png") {
+    if (agent.photo && agent.photo !== "default.png") {
       try {
-        await unlink(join(process.cwd(), "uploads", agent.user.photo));
+        await unlink(join(process.cwd(), "uploads", agent.photo));
       } catch (error) {
         console.error("Error deleting photo:", error);
       }
@@ -131,7 +125,7 @@ export class AgentsService {
 
     const result = await this.agentRepository.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException(`Agent with ID "${id}" not found`);
+      throw new NotFoundException(`Agent avec l'ID "${id}" non trouvé`);
     }
   }
 }

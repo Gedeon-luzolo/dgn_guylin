@@ -1,22 +1,17 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   OneToOne,
   JoinColumn,
 } from "typeorm";
+import { BasePerson } from "../../../common/entities/base-person.entity";
 import { User } from "../../users/entities/user.entity";
 
 @Entity("agents")
-export class Agent {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
-  @OneToOne("User", "agent", { eager: true })
+export class Agent extends BasePerson {
+  @OneToOne("User", "agent", { eager: true, nullable: true })
   @JoinColumn()
-  user: User;
+  user: User | null;
 
   @Column({ nullable: true })
   fonction: string;
@@ -32,10 +27,4 @@ export class Agent {
 
   @Column({ default: true })
   isActive: boolean;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }

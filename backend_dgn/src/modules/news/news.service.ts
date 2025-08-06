@@ -16,7 +16,6 @@ export class NewsService {
     private newsRepository: Repository<News>,
     @InjectRepository(NewsImage)
     private newsImageRepository: Repository<NewsImage>,
-    private membersService: MembersService,
     private imageProcessingService: ImageProcessingService
   ) {}
 
@@ -30,15 +29,11 @@ export class NewsService {
       files: files?.map((f) => ({ name: f.originalname, size: f.size })),
     });
 
-    const author = await this.membersService.findOne(createNewsDto.authorId);
-
     const news = this.newsRepository.create({
       title: createNewsDto.title,
       content: createNewsDto.content,
-      author,
     });
 
-    console.log("News entity created:", news);
 
     // Traiter les images si présentes
     if (files && files.length > 0) {
@@ -54,8 +49,6 @@ export class NewsService {
             const newsImage = this.newsImageRepository.create({
               url: filename,
               alt: file.originalname,
-              caption: createNewsDto.captions?.[index] || "",
-              isMain: index === (createNewsDto.mainImageIndex || 0),
             });
 
             console.log("News image entity created:", newsImage);
@@ -82,7 +75,7 @@ export class NewsService {
 
   async findAll(): Promise<News[]> {
     return this.newsRepository.find({
-      relations: ["author", "images"],
+      relations: ["images"],
       order: {
         createdAt: "DESC",
       },
@@ -92,7 +85,7 @@ export class NewsService {
   async findOne(id: string): Promise<News> {
     const news = await this.newsRepository.findOne({
       where: { id },
-      relations: ["images", "author"],
+      relations: ["images"],
     });
 
     if (!news) {
@@ -109,15 +102,6 @@ export class NewsService {
   ): Promise<News> {
     const news = await this.findOne(id);
 
-    if (updateNewsDto.authorId) {
-      const author = await this.membersService.findOne(updateNewsDto.authorId);
-      if (!author) {
-        throw new NotFoundException(
-          `Author with ID ${updateNewsDto.authorId} not found`
-        );
-      }
-      news.author = author;
-    }
 
     // Mise à jour des images si nécessaire
     if (files && files.length > 0) {
@@ -138,8 +122,6 @@ export class NewsService {
           return this.newsImageRepository.create({
             url: filename,
             alt: file.originalname,
-            caption: "",
-            isMain: index === 0,
             news,
           });
         })
@@ -178,5 +160,10 @@ export class NewsService {
     const news = await this.findOne(id);
     news.commentsCount += 1;
     return this.newsRepository.save(news);
+  }
+
+  // Méthode utilitaire pour obtenir l'image principale (première image)
+  getMainImage(news: News): NewsImage | null {
+    return news.images && news.images.length > 0 ? news.images[0] : null;
   }
 }

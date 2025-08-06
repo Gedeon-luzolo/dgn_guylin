@@ -6,8 +6,6 @@ import { Repository } from "typeorm";
 import { unlink } from "fs/promises";
 import { join } from "path";
 import { ImageProcessingService } from "src/common/services/image-processing.service";
-import { User } from "../users/entities/user.entity";
-import { UserData } from "../users/entities/user.interface";
 
 @Injectable()
 export class MembersService {
@@ -15,8 +13,6 @@ export class MembersService {
   constructor(
     @InjectRepository(Member)
     private readonly memberRepository: Repository<Member>,
-    @InjectRepository(User)
-    private readonly userRepository: Repository<User>,
     private readonly imageProcessingService: ImageProcessingService
   ) {}
 
@@ -27,14 +23,16 @@ export class MembersService {
   async create(createMemberDto: CreateMemberDto, photo?: Express.Multer.File) {
     let photoFilename = "default.png";
 
-    const existingUser = await this.userRepository.findOne({
+    // Vérifier si un membre avec ce téléphone existe déjà
+    const existingMember = await this.memberRepository.findOne({
       where: { telephone: createMemberDto.telephone },
     });
 
-    if (existingUser) {
+    if (existingMember) {
+      this.logger.warn("Un membre avec ce numéro de téléphone existe déjà");
       return {
         error: "Erreur serveur",
-        message: "Un utilisateur avec ce numéro de téléphone existe déjà",
+        message: "Un membre avec ce numéro de téléphone existe déjà",
       };
     }
 
@@ -42,27 +40,29 @@ export class MembersService {
       photoFilename = await this.imageProcessingService.processImage(photo);
     }
 
-    const userDto: UserData = {
+    // Créer directement le membre sans utilisateur associé
+    const member = this.memberRepository.create({
       nom: createMemberDto.nom,
       postNom: createMemberDto.postNom,
       prenom: createMemberDto.prenom,
-      telephone: createMemberDto.telephone,
-      photo: photoFilename,
-      genre: createMemberDto.genre,
-    };
-
-    const user = this.userRepository.create(userDto);
-    const savedUser = await this.userRepository.save(user);
-
-    const member = this.memberRepository.create({
-      user: savedUser,
       qualiteMembre: createMemberDto.qualiteMembre,
       province: createMemberDto.province,
       adresse: createMemberDto.adresse,
+      telephone: createMemberDto.telephone,
+      photo: photoFilename,
       isActive: true,
+      user: null, // Pas d'utilisateur associé par défaut
     });
+    
 
-    return await this.memberRepository.save(member);
+    try {
+      const savedMember = await this.memberRepository.save(member);
+
+      return savedMember;
+    } catch (error) {
+      this.logger.error("Error saving to database:", error);
+      throw error;
+    }
   }
 
   async findOne(id: string): Promise<Member> {
@@ -71,7 +71,7 @@ export class MembersService {
       relations: ["user"],
     });
     if (!member) {
-      throw new NotFoundException(`Member with ID "${id}" not found`);
+      throw new NotFoundException(`Membre avec l'ID "${id}" non trouvé`);
     }
     return member;
   }
@@ -82,12 +82,12 @@ export class MembersService {
     photo?: Express.Multer.File
   ): Promise<Member> {
     const member = await this.findOne(id);
-    let photoFilename = member.user.photo;
+    let photoFilename = member.photo || "default.png";
 
     if (photo) {
-      if (member.user.photo && member.user.photo !== "default.png") {
+      if (member.photo && member.photo !== "default.png") {
         try {
-          await unlink(join(process.cwd(), "uploads", member.user.photo));
+          await unlink(join(process.cwd(), "uploads", member.photo));
         } catch (error) {
           console.error("Error deleting old photo:", error);
         }
@@ -95,22 +95,16 @@ export class MembersService {
       photoFilename = await this.imageProcessingService.processImage(photo);
     }
 
-    const userUpdateDto: UserData = {
+    // Mettre à jour directement les champs du membre
+    Object.assign(member, {
       nom: updateMemberDto.nom,
       postNom: updateMemberDto.postNom,
       prenom: updateMemberDto.prenom,
-      telephone: updateMemberDto.telephone,
-      photo: photoFilename,
-      genre: updateMemberDto.genre,
-    };
-
-    Object.assign(member.user, userUpdateDto);
-    await this.userRepository.save(member.user);
-
-    Object.assign(member, {
       qualiteMembre: updateMemberDto.qualiteMembre,
       province: updateMemberDto.province,
       adresse: updateMemberDto.adresse,
+      telephone: updateMemberDto.telephone,
+      photo: photoFilename,
     });
 
     return await this.memberRepository.save(member);
@@ -119,9 +113,9 @@ export class MembersService {
   async remove(id: string): Promise<void> {
     const member = await this.findOne(id);
 
-    if (member.user.photo && member.user.photo !== "default.png") {
+    if (member.photo && member.photo !== "default.png") {
       try {
-        await unlink(join(process.cwd(), "uploads", member.user.photo));
+        await unlink(join(process.cwd(), "uploads", member.photo));
       } catch (error) {
         console.error("Error deleting photo:", error);
       }
@@ -129,7 +123,7 @@ export class MembersService {
 
     const result = await this.memberRepository.delete(id);
     if (result.affected === 0) {
-      throw new NotFoundException(`Member with ID "${id}" not found`);
+      throw new NotFoundException(`Membre avec l'ID "${id}" non trouvé`);
     }
   }
 }

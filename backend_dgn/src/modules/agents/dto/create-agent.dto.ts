@@ -3,33 +3,9 @@ import {
   IsNotEmpty,
   IsOptional,
 } from "class-validator";
-import { UserData } from "../../users/entities/user.interface";
+import { BasePersonDto } from "../../../common/dto/base-person.dto";
 
-export class CreateAgentDto implements UserData {
-  @IsString()
-  @IsNotEmpty()
-  nom: string;
-
-  @IsString()
-  @IsNotEmpty()
-  postNom: string;
-
-  @IsString()
-  @IsNotEmpty()
-  prenom: string;
-
-  @IsString()
-  @IsNotEmpty()
-  genre: "Homme" | "Femme";
-
-  @IsString()
-  @IsNotEmpty()
-  telephone: string;
-
-  @IsString()
-  @IsOptional()
-  photo: string;
-
+export class CreateAgentDto extends BasePersonDto {
   @IsString()
   @IsOptional()
   fonction?: string;

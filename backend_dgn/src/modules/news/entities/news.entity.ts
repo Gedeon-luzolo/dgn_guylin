@@ -22,10 +22,6 @@ export class News {
   @Column("text")
   content: string;
 
-  @ManyToOne(() => Member, { eager: true })
-  @JoinColumn()
-  author: Member;
-
   @OneToMany(() => NewsImage, (image) => image.news, {
     cascade: true,
     eager: true,
@@ -56,12 +52,6 @@ export class NewsImage {
 
   @Column({ nullable: true })
   alt: string;
-
-  @Column({ nullable: true })
-  caption: string;
-
-  @Column({ default: false })
-  isMain: boolean;
 
   @ManyToOne(() => News, (news) => news.images, { onDelete: "CASCADE" })
   news: News;

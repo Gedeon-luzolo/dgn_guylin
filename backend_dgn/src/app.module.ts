@@ -52,6 +52,11 @@ export class AppModule implements OnApplicationBootstrap {
   constructor(private adminSeeder: AdminSeeder) {}
 
   async onApplicationBootstrap() {
-    await this.adminSeeder.seed();
+    try {
+      await this.adminSeeder.seed();
+      console.log("✅ Database seeding completed successfully");
+    } catch (error) {
+      console.error("❌ Database seeding failed:", error);
+    }
   }
 }

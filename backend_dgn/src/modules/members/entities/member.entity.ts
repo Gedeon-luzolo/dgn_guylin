@@ -1,31 +1,17 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
-  CreateDateColumn,
-  UpdateDateColumn,
   OneToOne,
   JoinColumn,
 } from "typeorm";
+import { BasePerson } from "../../../common/entities/base-person.entity";
 import { User } from "../../users/entities/user.entity";
 
 @Entity("members")
-export class Member {
-  @PrimaryGeneratedColumn("uuid")
-  id: string;
-
-  @OneToOne("User", "member", { eager: true })
+export class Member extends BasePerson {
+  @OneToOne("User", "member", { eager: true, nullable: true })
   @JoinColumn()
-  user: User;
-
-  @Column()
-  nom: string;
-
-  @Column()
-  postNom: string;
-
-  @Column()
-  prenom: string;
+  user: User | null;
 
   @Column()
   qualiteMembre: string;
@@ -36,18 +22,6 @@ export class Member {
   @Column()
   adresse: string;
 
-  @Column({ nullable: true, unique: true })
-  telephone: string;
-
-  @Column({ nullable: true })
-  photo: string;
-
   @Column({ default: true })
   isActive: boolean;
-
-  @CreateDateColumn()
-  createdAt: Date;
-
-  @UpdateDateColumn()
-  updatedAt: Date;
 }
