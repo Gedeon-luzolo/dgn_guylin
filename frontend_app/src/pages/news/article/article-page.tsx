@@ -8,71 +8,43 @@ import LoadingSpinner from "@/components/loader/LoadingSpinner";
 import { getImageUrl, formatDate } from "@/lib/genFuction";
 
 const ImageGallery = ({ images }: { images: NewsImage[] }) => {
-  const [selectedImage, setSelectedImage] = useState<NewsImage | null>(null);
+  const [selectedImage, setSelectedImage] = useState<NewsImage | null>(
+    images[0] || null
+  );
 
   return (
-    <div className="my-8">
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-        {images.map((image, index) => (
-          <div
-            key={index}
-            className="relative aspect-[4/3] group cursor-pointer overflow-hidden rounded-lg"
-            onClick={() => setSelectedImage(image)}
-          >
-            <img
-              src={getImageUrl(image.url)}
-              alt={image.alt || "Image"}
-              className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
-            />
-            {image.caption && (
-              <div className="absolute inset-x-0 bottom-0 bg-black/50 p-2 translate-y-full transition-transform duration-300 group-hover:translate-y-0">
-                <p className="text-white text-sm">{image.caption}</p>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
-
-      {/* Modal pour l'image en plein écran */}
+    <div className="space-y-4">
+      {/* Image principale */}
       {selectedImage && (
-        <div
-          className="fixed inset-0 bg-black/90 z-50 flex items-center justify-center p-4"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative max-w-7xl w-full">
-            <img
-              src={getImageUrl(selectedImage.url)}
-              alt={selectedImage.alt || "Image"}
-              className="w-full h-auto max-h-[90vh] object-contain rounded-lg"
-            />
-            {selectedImage.caption && (
-              <p className="absolute bottom-4 left-4 right-4 text-white text-center bg-black/50 p-2 rounded">
-                {selectedImage.caption}
-              </p>
-            )}
+        <div className="relative">
+          <img
+            src={getImageUrl(selectedImage.url)}
+            alt={selectedImage.alt || "Image de l'article"}
+            className="w-full h-96 object-cover rounded-lg"
+          />
+        </div>
+      )}
+
+      {/* Galerie d'images */}
+      {images.length > 1 && (
+        <div className="grid grid-cols-4 gap-2">
+          {images.map((image, index) => (
             <button
-              className="absolute top-4 right-4 text-white hover:text-gray-300"
-              onClick={(e) => {
-                e.stopPropagation();
-                setSelectedImage(null);
-              }}
+              key={index}
+              onClick={() => setSelectedImage(image)}
+              className={`relative overflow-hidden rounded-lg transition-all duration-200 ${
+                selectedImage?.id === image.id
+                  ? "ring-2 ring-blue-500"
+                  : "hover:opacity-80"
+              }`}
             >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <line x1="18" y1="6" x2="6" y2="18" />
-                <line x1="6" y1="6" x2="18" y2="18" />
-              </svg>
+              <img
+                src={getImageUrl(image.url)}
+                alt={image.alt || `Image ${index + 1}`}
+                className="w-full h-20 object-cover"
+              />
             </button>
-          </div>
+          ))}
         </div>
       )}
     </div>
@@ -91,14 +63,14 @@ export const ArticlePage = () => {
 
   const { data: article, isLoading, isError } = useGet(id as string);
 
-  // Fonction pour obtenir l'image principale
+  // Fonction pour obtenir l'image principale (première image)
   const getMainImage = (images: NewsImage[]): NewsImage | undefined => {
-    return images.find((img) => img.isMain);
+    return images && images.length > 0 ? images[0] : undefined;
   };
 
-  // Fonction pour obtenir les images non principales
+  // Fonction pour obtenir les images de la galerie (toutes sauf la première)
   const getGalleryImages = (images: NewsImage[]): NewsImage[] => {
-    return images.filter((img) => !img.isMain);
+    return images && images.length > 1 ? images.slice(1) : [];
   };
 
   if (isLoading) {
@@ -135,11 +107,6 @@ export const ArticlePage = () => {
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-black/30" />
-              {mainImage.caption && (
-                <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-4 text-white text-center">
-                  {mainImage.caption}
-                </div>
-              )}
             </>
           ) : (
             <div className="w-full h-full bg-gradient-to-br from-blue-600 to-indigo-800" />

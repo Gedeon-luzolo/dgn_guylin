@@ -15,7 +15,6 @@ import {
   SelectItem,
   SelectTrigger,
 } from "@/components/ui/select";
-import { SelectLabel } from "@radix-ui/react-select";
 
 export const AdhesionPage: React.FC = () => {
   const navigate = useNavigate();

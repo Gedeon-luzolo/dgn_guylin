@@ -60,10 +60,10 @@ export const AgentContributionPage = () => {
             {/* En-tête du profil */}
             <div className="text-center mb-8">
               <div className="size-24 mx-auto mb-4 rounded-full overflow-hidden bg-white/20 ring-4 ring-white/20">
-                {agent.user.photo ? (
+                {agent.photo ? (
                   <img
-                    src={getImageUrl(agent.user.photo)}
-                    alt={`${agent.user.nom} ${agent.user.postNom}`}
+                    src={getImageUrl(agent.photo)}
+                    alt={`${agent.nom} ${agent.postNom}`}
                     className="w-full h-full object-cover"
                   />
                 ) : (
@@ -73,7 +73,7 @@ export const AgentContributionPage = () => {
                 )}
               </div>
               <h2 className="text-2xl font-bold text-white">
-                {agent.user.nom} {agent.user.postNom} {agent.user.prenom}
+                {agent.nom} {agent.postNom} {agent.prenom}
               </h2>
               <p className="text-white/70 mt-1">
                 {agent.fonction || "TRANS ACADEMIA"}

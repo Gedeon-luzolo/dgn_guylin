@@ -42,7 +42,7 @@ export const CreateAgentPage = () => {
     endpoint: "/agents",
     queryKey: "agents",
     message: "Agent",
-    contentType: "multipart/form-data",
+    // contentType: "multipart/form-data",
   });
 
   const createMutation = useCreate();
@@ -298,14 +298,14 @@ export const CreateAgentPage = () => {
                   >
                     <div className="flex items-center gap-2">
                       <div className="size-10 rounded-full overflow-hidden bg-white/20 shrink-0">
-                        {agent.user.photo ? (
+                        {agent.photo ? (
                           <img
                             src={
-                              agent.user.photo
-                                ? getImageUrl(agent.user.photo as string)
+                              agent.photo
+                                ? getImageUrl(agent.photo as string)
                                 : undefined
                             }
-                            alt={`${agent.user.nom} ${agent.user.postNom}`}
+                            alt={`${agent.nom} ${agent.postNom}`}
                             className="w-full h-full object-cover"
                           />
                         ) : (
@@ -316,13 +316,11 @@ export const CreateAgentPage = () => {
                       </div>
                       <div className="min-w-0 flex-1">
                         <h3 className="text-sm font-medium text-white truncate">
-                          {agent.user.nom} {agent.user.postNom}
+                          {agent.nom} {agent.postNom}
                         </h3>
                         <div className="flex items-center text-white/60 text-xs">
                           <PhoneIcon className="w-3 h-3 mr-1" />
-                          <span className="truncate">
-                            {agent.user.telephone}
-                          </span>
+                          <span className="truncate">{agent.telephone}</span>
                         </div>
                       </div>
                     </div>

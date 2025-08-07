@@ -2,6 +2,7 @@ import React from "react";
 import type { Application } from "./types";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import logo from "@/assets/images/logo/logo_dgn.png";
 
 interface ApplicationCardProps {
   application: Application;
@@ -43,7 +44,7 @@ export const ApplicationCard: React.FC<ApplicationCardProps> = ({
           <div className="flex items-center space-x-2 md:space-x-3">
             <div className="flex-shrink-0 w-10 h-10 md:w-16 md:h-16 backdrop-blur-sm rounded-lg md:rounded-xl flex items-center justify-center shadow-md border border-white/20 transition-transform duration-300 group-hover:scale-110">
               <img
-                src="/src/assets/images/logo/logo_dgn.png"
+                src={logo}
                 alt={application.title}
                 className="w-7 h-7 md:w-10 md:h-10 transition-transform duration-300 group-hover:scale-110"
               />

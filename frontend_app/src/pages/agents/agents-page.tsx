@@ -29,7 +29,7 @@ export function AgentsPage() {
 
     const results = agents.filter((agent) => {
       const fullName =
-        `${agent.user.nom} ${agent.user.postNom} ${agent.user.prenom}`.toLowerCase();
+        `${agent.nom} ${agent.postNom} ${agent.prenom}`.toLowerCase();
       return fullName.includes(normalizedSearch);
     });
 
@@ -116,14 +116,14 @@ export function AgentsPage() {
                       {/* Photo de profil avec animation au hover */}
                       <div className="relative">
                         <div className="size-12 sm:w-20 sm:h-20 rounded-xl overflow-hidden bg-white/20 ring-2 ring-white/20 group-hover:ring-yellow-400/50 transition-all duration-300">
-                          {agent.user.photo ? (
+                          {agent.photo ? (
                             <img
                               src={
-                                agent.user.photo
-                                  ? getImageUrl(agent.user.photo as string)
+                                agent.photo
+                                  ? getImageUrl(agent.photo as string)
                                   : undefined
                               }
-                              alt={`${agent.user.nom} ${agent.user.postNom}`}
+                              alt={`${agent.nom} ${agent.postNom}`}
                               className="w-full h-full object-cover"
                             />
                           ) : (
@@ -139,20 +139,20 @@ export function AgentsPage() {
                         <div className="flex items-start justify-between">
                           <div>
                             <h3 className="text-lg font-semibold text-white truncate group-hover:text-yellow-400 transition-colors duration-300">
-                              {agent.user.nom} {agent.user.postNom}
+                              {agent.nom} {agent.postNom}
                             </h3>
                             <p className="text-white/70 text-sm">
-                              {agent.user.prenom}
+                              {agent.prenom}
                             </p>
                           </div>
                           <div className="flex items-center gap-4">
                             <div className="flex items-center text-white/60 text-sm">
                               <PhoneIcon className="w-4 h-4 mr-1" />
                               <span className="hidden sm:inline">
-                                {agent.user.telephone}
+                                {agent.telephone}
                               </span>
                               <span className="sm:hidden">
-                                {agent.user.telephone.slice(-4)}
+                                {agent.telephone.slice(-4)}
                               </span>
                             </div>
                             <div className="hidden sm:flex items-center text-yellow-400/70 group-hover:text-yellow-400 transition-colors duration-300">

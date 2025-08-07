@@ -23,9 +23,7 @@ export const CreateArticleModal = ({
 }: CreateArticleModalProps) => {
   // État pour les images uniquement
   const [imageFiles, setImageFiles] = useState<File[]>([]);
-  const [previewImages, setPreviewImages] = useState<
-    { url: string; caption: string }[]
-  >([]);
+  const [previewImages, setPreviewImages] = useState<string[]>([]);
 
   // Hook CRUD personnalisé
   const { useCreate } = useCrud({
@@ -44,18 +42,14 @@ export const CreateArticleModal = ({
       setImageFiles((prev) => [...prev, ...newFiles]);
 
       // Créer des URLs temporaires pour la prévisualisation
-      const newPreviews = newFiles.map((file) => ({
-        url: URL.createObjectURL(file),
-        caption: "",
-      }));
-
+      const newPreviews = newFiles.map((file) => URL.createObjectURL(file));
       setPreviewImages((prev) => [...prev, ...newPreviews]);
     }
   };
 
   const removeImage = (index: number) => {
     // Libérer l'URL de prévisualisation
-    URL.revokeObjectURL(previewImages[index].url);
+    URL.revokeObjectURL(previewImages[index]);
 
     // Supprimer l'image des états
     setImageFiles((prev) => prev.filter((_, i) => i !== index));
@@ -67,44 +61,26 @@ export const CreateArticleModal = ({
     const form = e.currentTarget;
     const formData = new FormData(form);
 
-    formData.append("authorId", "eb777ac0-50c0-4ae4-a95f-c880e3e215fd");
-    formData.append("authorName", "Admin");
-    formData.append("authorRole", "admin");
-
     // Supprimer les anciennes données d'images du formData
     formData.delete("images");
-    formData.delete("captions");
 
     // Ajouter les fichiers d'images directement
     imageFiles.forEach((file) => {
       formData.append("images", file);
     });
 
-    // Ajouter les légendes comme un champ JSON séparé
-    const captions = previewImages.map((img) => img.caption);
-    formData.append("captions", JSON.stringify(captions));
-
-    // Ajouter l'information sur l'image principale
-    formData.append("mainImageIndex", "0");
-
-    console.log("Submitting article with temporary user data");
-
     // Envoyer les données
     createMutation.mutate(formData, {
       onSuccess: () => {
         // Nettoyer les URLs de prévisualisation
-        previewImages.forEach((preview) => URL.revokeObjectURL(preview.url));
+        previewImages.forEach((preview) => URL.revokeObjectURL(preview));
         setImageFiles([]);
         setPreviewImages([]);
         onClose();
       },
     });
-  };
 
-  const handleCaptionChange = (index: number, caption: string) => {
-    setPreviewImages((prev) =>
-      prev.map((img, i) => (i === index ? { ...img, caption } : img))
-    );
+    console.log(Object.entries(formData.entries()));
   };
 
   return (
@@ -142,10 +118,10 @@ export const CreateArticleModal = ({
           <div className="space-y-4">
             <Label>Images</Label>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {previewImages.map((image, index) => (
+              {previewImages.map((imageUrl, index) => (
                 <div key={index} className="relative group">
                   <img
-                    src={image.url}
+                    src={imageUrl}
                     alt={`Preview ${index + 1}`}
                     className="w-full h-48 object-cover rounded-lg"
                   />
@@ -159,12 +135,6 @@ export const CreateArticleModal = ({
                       Supprimer
                     </Button>
                   </div>
-                  <Input
-                    value={image.caption}
-                    onChange={(e) => handleCaptionChange(index, e.target.value)}
-                    placeholder={`Légende de l'image ${index + 1}`}
-                    className="mt-2"
-                  />
                 </div>
               ))}
             </div>

@@ -1,15 +1,17 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
-import { getErrorMessage } from "@/lib/getErrorMessage";
 import { api } from "@/lib/axios";
+import { getErrorMessage } from "@/lib/getErrorMessage";
 
 interface CrudOptions<T> {
   endpoint: string;
   idField?: keyof T;
   queryKey?: string;
   queryKey2?: string;
+  queryKey3?: string;
   message?: string;
+  contentType?: string;
 }
 
 interface QueryParams {
@@ -26,7 +28,9 @@ export function useCrud<T extends { [key: string]: any }>({
   idField = "id" as keyof T,
   queryKey,
   queryKey2,
+  queryKey3,
   message,
+  contentType,
 }: CrudOptions<T>) {
   const queryClient = useQueryClient();
 
@@ -39,7 +43,7 @@ export function useCrud<T extends { [key: string]: any }>({
       queryKey: [resourceKey],
       queryFn: async (): Promise<T[]> => {
         try {
-          const { data } = await api.get<T[]>(endpoint);
+          const { data } = await api(contentType).get<T[]>(endpoint);
           return data;
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -58,7 +62,27 @@ export function useCrud<T extends { [key: string]: any }>({
       queryKey: [resourceKey, params],
       queryFn: async (): Promise<T[]> => {
         try {
-          const { data } = await api.get<T[]>(endpoint, { params });
+          const { data } = await api(contentType).get<T[]>(endpoint, {
+            params,
+          });
+          return data;
+        } catch (error) {
+          if (error instanceof AxiosError) {
+            const errorMsg = getErrorMessage(error);
+            toast.error(errorMsg);
+          }
+          throw error;
+        }
+      },
+    });
+  };
+
+  const useFetch = () => {
+    return useQuery({
+      queryKey: [resourceKey],
+      queryFn: async (): Promise<T> => {
+        try {
+          const { data } = await api(contentType).get<T>(endpoint);
           return data;
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -77,7 +101,7 @@ export function useCrud<T extends { [key: string]: any }>({
       queryKey: [resourceKey, params],
       queryFn: async (): Promise<T> => {
         try {
-          const { data } = await api.get<T>(endpoint, { params });
+          const { data } = await api(contentType).get<T>(endpoint, { params });
           return data;
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -96,7 +120,7 @@ export function useCrud<T extends { [key: string]: any }>({
       queryKey: [resourceKey, id],
       queryFn: async (): Promise<T> => {
         try {
-          const { data } = await api.get<T>(`${endpoint}/${id}`);
+          const { data } = await api(contentType).get<T>(`${endpoint}/${id}`);
           return data;
         } catch (error) {
           if (error instanceof AxiosError) {
@@ -113,7 +137,7 @@ export function useCrud<T extends { [key: string]: any }>({
   const useCreate = () => {
     return useMutation<T, AxiosError<ApiError>, Omit<T, typeof idField>>({
       mutationFn: async (newItem) => {
-        const { data } = await api.post<T>(endpoint, newItem);
+        const { data } = await api(contentType).post<T>(endpoint, newItem);
         return data;
       },
       onSuccess: () => {
@@ -134,7 +158,10 @@ export function useCrud<T extends { [key: string]: any }>({
     return useMutation<T, AxiosError<ApiError>, T>({
       mutationFn: async (updatedItem) => {
         const id = updatedItem[idField];
-        const { data } = await api.put<T>(`${endpoint}/${id}`, updatedItem);
+        const { data } = await api(contentType).put<T>(
+          `${endpoint}/${id}`,
+          updatedItem
+        );
         return data;
       },
       onSuccess: (_, variables) => {
@@ -142,6 +169,7 @@ export function useCrud<T extends { [key: string]: any }>({
           queryKey: [resourceKey, variables[idField]],
         });
         queryClient.invalidateQueries({ queryKey: [queryKey2] });
+        queryClient.invalidateQueries({ queryKey: [queryKey3] });
         toast.success(`${message} modifié avec succès`);
       },
       onError: (error: AxiosError<ApiError>) => {
@@ -156,7 +184,7 @@ export function useCrud<T extends { [key: string]: any }>({
   const useDelete = () => {
     return useMutation<void, AxiosError<ApiError>, string | number>({
       mutationFn: async (id) => {
-        await api.delete(`${endpoint}/${id}`);
+        await api(contentType).delete(`${endpoint}/${id}`);
       },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [resourceKey] });
@@ -173,7 +201,7 @@ export function useCrud<T extends { [key: string]: any }>({
   const useDeleteAll = () => {
     return useMutation<void, AxiosError<ApiError>, void>({
       mutationFn: async () => {
-        await api.delete(endpoint);
+        await api(contentType).delete(endpoint);
       },
       onSuccess: () => {
         queryClient.invalidateQueries({ queryKey: [resourceKey] });
@@ -188,6 +216,7 @@ export function useCrud<T extends { [key: string]: any }>({
   };
 
   return {
+    useFetch,
     useFetchWithParams,
     useList,
     useListWithParams,

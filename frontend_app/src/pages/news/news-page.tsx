@@ -23,7 +23,7 @@ export const NewsPage = () => {
 
   const featuredArticle = news[0] || null;
   const getMainImage = (images: NewsImage[]): NewsImage | undefined => {
-    return images?.find((img) => img.isMain);
+    return images && images.length > 0 ? images[0] : undefined;
   };
 
   if (isLoading)
@@ -109,13 +109,6 @@ export const NewsPage = () => {
                     }
                     className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                   />
-                )}
-                {getMainImage(featuredArticle.images)?.caption && (
-                  <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-3">
-                    <p className="text-white text-sm text-center">
-                      {getMainImage(featuredArticle.images)?.caption}
-                    </p>
-                  </div>
                 )}
                 {featuredArticle.images.length > 1 && (
                   <div className="absolute top-4 right-4 bg-black/50 px-3 py-1 rounded-full">

@@ -34,6 +34,11 @@ import { ContributionsModule } from "./modules/contributions/contributions.modul
       },
       inject: [ConfigService],
     }),
+        // Configuration pour servir les fichiers statiques
+    ServeStaticModule.forRoot({
+      rootPath: join(__dirname, "..", "..", "frontend_app", "dist"),
+      serveRoot: "/",
+    }),
     ServeStaticModule.forRoot({
       rootPath: join(__dirname, "..", "uploads"),
       serveRoot: "/uploads",

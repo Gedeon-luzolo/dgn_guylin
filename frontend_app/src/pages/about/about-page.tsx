@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import guylinAbout from "@/assets/images/guylin/guylin-about.jpg";
 
 export const AboutPage = () => {
   return (
@@ -91,7 +92,7 @@ export const AboutPage = () => {
             <div className="overflow-hidden rounded-4xl ">
               <div className="relative">
                 <img
-                  src="./src/assets/images/guylin/guylin-about.jpg"
+                  src={guylinAbout}
                   alt="Guylain Nyembo"
                   className="w-full h-full object-cover "
                 />

@@ -4,8 +4,6 @@ export interface NewsImage {
   id: string;
   url: string;
   alt?: string;
-  caption?: string;
-  isMain: boolean;
 }
 
 export interface NewsArticle {

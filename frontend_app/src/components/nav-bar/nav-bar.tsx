@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { Link } from "react-router-dom";
 import { NavbarItems } from "../../lib/NavbarItems";
+import logo from "@/assets/images/logo/logo-DGN-png.png";
 
 export const NavBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -64,7 +65,7 @@ export const NavBar: React.FC = () => {
                   >
                     <div className="size-12 rounded-full">
                       <img
-                        src="/src/assets/images/logo/logo-DGN-png.png"
+                        src={logo}
                         alt="logo"
                         className="w-full h-full object-cover"
                       />
