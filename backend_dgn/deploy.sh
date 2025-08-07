@@ -9,7 +9,22 @@ echo "🚀 Début du déploiement..."
 
 
 
+# Fonction pour afficher les messages colorés
+log_info() {
+    echo -e "${BLUE}ℹ️  $1${NC}"
+}
 
+log_success() {
+    echo -e "${GREEN}✅ $1${NC}"
+}
+
+log_warning() {
+    echo -e "${YELLOW}⚠️  $1${NC}"
+}
+
+log_error() {
+    echo -e "${RED}❌ $1${NC}"
+}
 
 # Étape 1: Pull depuis la branche feat
 log_info "Étape 1: Pull depuis origin/feat..."
