@@ -26,9 +26,9 @@ log_error() {
     echo -e "${RED}❌ $1${NC}"
 }
 
-# Étape 1: Pull depuis la branche feat
-log_info "Étape 1: Pull depuis origin/feat..."
-git pull origin feat
+# Étape 1: Pull depuis la branche preprod
+log_info "Étape 1: Pull depuis origin/preprod..."
+git pull origin preprod
 if [ $? -eq 0 ]; then
     log_success "Pull réussi"
 else
@@ -49,7 +49,7 @@ fi
 # Étape 3: Aller dans le dossier frontend et installer les dépendances
 log_info "Étape 3: Installation des dépendances frontend..."
 cd ../frontend_app
-npm install
+pnpm install
 if [ $? -eq 0 ]; then
     log_success "Dépendances frontend installées"
 else
@@ -59,7 +59,7 @@ fi
 
 # Étape 4: Build du frontend
 log_info "Étape 4: Build du frontend..."
-npm run build
+pnpm run build
 if [ $? -eq 0 ]; then
     log_success "Build frontend réussi"
 else

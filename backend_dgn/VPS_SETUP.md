@@ -178,10 +178,13 @@ server {
 ### 11. Activer le site
 ```bash
 # Créer un lien symbolique
-ln -s /etc/nginx/sites-available/dgn /etc/nginx/sites-enabled/
+ln -s /etc/nginx/sites-available/dgn/etc/nginx/sites-enabled/
 
 # Supprimer le site par défaut
 rm /etc/nginx/sites-enabled/default
+
+
+
 
 # Tester la configuration
 nginx -t
@@ -195,7 +198,7 @@ systemctl restart nginx
 ### 12. Obtenir le certificat SSL
 ```bash
 # Remplacer par votre domaine
-certbot --nginx -d votre-domaine.com -d www.votre-domaine.com
+certbot --nginx -d preprod.dgn-rdc.net -d www.preprod.dgn-rdc.net
 
 # Renouvellement automatique
 crontab -e
@@ -239,7 +242,7 @@ chmod +x deploy.sh
 ```bash
 ./deploy.sh
 ```
-
+./deploy.sh
 ## 📊 Monitoring et Logs
 
 ### 17. Commandes utiles
