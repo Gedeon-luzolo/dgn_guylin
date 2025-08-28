@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 import { NavbarItems } from "@/lib/NavbarItems";
 import flagOverlay from "@/assets/images/flag_overlay.png";
 import logoDgn from "@/assets/images/logo/logo_dgn.png";
-import { Facebook, Instagram, Twitter, Youtube, YoutubeIcon } from "lucide-react";
+import { Facebook, Instagram, Twitter, YoutubeIcon } from "lucide-react";
 
 const NewFooter: React.FC = () => {
   return (
