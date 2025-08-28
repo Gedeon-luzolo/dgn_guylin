@@ -112,7 +112,7 @@ export const MembersPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
       {/* Hero Section */}
-      <div className="max-w-7xl mx-auto mb-6 mt-16 flex items-center justify-between">
+      <div className="widthpx mx-auto mb-6 mt-16 flex items-center justify-between">
         <div>
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white mb-4">
             Nos Membres
@@ -130,7 +130,7 @@ export const MembersPage = () => {
       </div>
 
       {/* Filters */}
-      <div className="max-w-7xl mx-auto mb-8">
+      <div className="widthpx mx-auto mb-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <Input
             type="text"
@@ -155,7 +155,7 @@ export const MembersPage = () => {
       </div>
 
       {/* Members Grid */}
-      <div className="max-w-7xl mx-auto">
+      <div className="widthpx mx-auto">
         <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
           {filteredMembers.map((member) => (
             <Card

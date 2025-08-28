@@ -31,7 +31,7 @@ export const ApplicationsGrid: React.FC = () => {
         NOS APPLICATIONS
       </motion.h1>
       <motion.div
-        className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto"
+        className="grid sm:grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 widthpx mx-auto"
         variants={container}
         initial="hidden"
         animate="show"

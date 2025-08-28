@@ -9,7 +9,7 @@ export const AboutPage = () => {
       <div className="relative bg-blue-900 dark:bg-blue-950">
         <div className="absolute -z-0 inset-0 bg-[url('/src/assets/images/flag_overlay.png')] opacity-10"></div>
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        <div className="widthpx mx-auto px-4 sm:px-6 lg:px-8 py-16">
           <div className="text-center">
             <h1 className="text-4xl md:text-5xl font-bold text-white mb-4 pt-13">
               Qui sommes-nous ?
@@ -25,7 +25,7 @@ export const AboutPage = () => {
       </div>
 
       {/* Main Content */}
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="widthpx mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid lg:grid-cols-2 gap-12 items-start">
           {/* Text Content */}
           <div>
@@ -77,12 +77,12 @@ export const AboutPage = () => {
                 Promouvoir la vision, les actions et les valeurs incarnées par
                 le Président de la République ; Conscientiser la jeunesse sur
                 son rôle dans la construction du pays ; Encourager
-                l’autonomisation des jeunes et des femmes à travers
-                l’entrepreneuriat, l’innovation, la formation et la santé ;
+                l'autonomisation des jeunes et des femmes à travers
+                l'entrepreneuriat, l'innovation, la formation et la santé ;
                 Appuyer les initiatives locales de développement rural et urbain
-                ; Lutter contre la pauvreté, l’analphabétisme, le tribalisme et
-                l’exclusion sociale ; Défendre les causes liées à
-                l’environnement, aux droits humains et à la bonne gouvernance.
+                ; Lutter contre la pauvreté, l'analphabétisme, le tribalisme et
+                l'exclusion sociale ; Défendre les causes liées à
+                l'environnement, aux droits humains et à la bonne gouvernance.
               </p>
             </div>
           </div>
@@ -110,7 +110,7 @@ export const AboutPage = () => {
         {/* Ethical Engagement Section */}
         <div className="mt-16">
           <Card className="p-8 bg-blue-900 dark:bg-blue-950 text-white">
-            <div className="max-w-3xl mx-auto text-center">
+            <div className="widthpx mx-auto text-center">
               <div className="flex items-center justify-center mb-6">
                 <div className="w-12 h-12 flex items-center justify-center rounded-full bg-white/10">
                   <span className="text-2xl">💡</span>

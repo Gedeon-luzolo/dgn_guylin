@@ -8,7 +8,7 @@ import logo from "@/assets/images/logo/logo-DGN-png.png";
 export const NavBar: React.FC = () => {
   const [isOpen, setIsOpen] = useState(false);
 
-  // Utilisation de useCallback pour optimiser les performances
+
   const toggleMenu = useCallback(() => {
     setIsOpen((prev) => !prev);
   }, []);
@@ -47,7 +47,7 @@ export const NavBar: React.FC = () => {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="fixed top-6 left-0 right-0 z-50"
       >
-        <div className="max-w-7xl mx-auto px-6">
+        <div className="widthpx mx-auto px-6">
           {/* Container avec glassmorphism moderne */}
 
           <div className="relative backdrop-blur-md bg-gradient-to-r from-purple-500/40 via-blue-500/40 to-blue-700/50 p-4 border border-white/20 rounded-4xl shadow-xl shadow-black/5">

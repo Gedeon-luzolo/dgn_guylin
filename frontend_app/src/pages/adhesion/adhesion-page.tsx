@@ -62,7 +62,7 @@ export const AdhesionPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-[var(--dgn-blue)] py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-2xl mx-auto">
+      <div className="widthpx mx-auto">
         <h1 className="text-3xl font-bold text-white text-center mb-6 mt-16">
           REMPLISSEZ LE FORMULAIRE
         </h1>

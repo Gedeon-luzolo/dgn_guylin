@@ -42,7 +42,7 @@ export const NewsPage = () => {
   if (news.length === 0) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto mb-6 mt-16">
+        <div className="widthpx mx-auto mb-6 mt-16">
           <div className="flex justify-between items-center mb-4">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
               Actualités
@@ -70,7 +70,7 @@ export const NewsPage = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 dark:from-gray-900 dark:to-gray-800 py-12 px-4 sm:px-6 lg:px-8">
       {/* Hero Section */}
-      <div className="max-w-7xl mx-auto mb-6 mt-16">
+      <div className="widthpx mx-auto mb-6 mt-16">
         <div className="flex justify-between items-center mb-4">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 dark:text-white">
             Actualités
@@ -96,7 +96,7 @@ export const NewsPage = () => {
 
       {/* Featured Article */}
       {featuredArticle && (
-        <div className="max-w-7xl mx-auto mb-12">
+        <div className="widthpx mx-auto mb-12">
           <Card className="relative overflow-hidden backdrop-blur-md bg-white/30 dark:bg-gray-800/30 border-0 shadow-xl">
             <div className="grid md:grid-cols-2 gap-6 p-6">
               <div className="relative h-[400px] rounded-lg overflow-hidden group">
@@ -179,7 +179,7 @@ export const NewsPage = () => {
       )}
 
       {/* Popular Posts */}
-      <div className="max-w-7xl mx-auto">
+      <div className="widthpx mx-auto">
         <h2 className="text-2xl font-bold mb-6 text-gray-900 dark:text-white">
           Articles Populaires
         </h2>

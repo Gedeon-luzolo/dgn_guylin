@@ -9,7 +9,7 @@ export const slides = [
       "Parce que chaque vie compte, la DGN s'engage pour un développement inclusif et solidaire.",
     subtitle: "",
     author: "GUYLAIN NYEMBO M.",
-    role: "Coordonnateur National",
+    role: "Autorité morale",
     cta: {
       text: "En savoir plus",
       link: "/about",
@@ -21,7 +21,7 @@ export const slides = [
       "La DGN, un levier de transformation pour la jeunesse au cœur du développement local et rural.",
     subtitle: "",
     author: "GUYLAIN NYEMBO M.",
-    role: "Coordonnateur National",
+    role: "Autorité morale",
     cta: {
       text: "En savoir plus",
       link: "/projects",
@@ -33,7 +33,7 @@ export const slides = [
       "Accompagner de manière participative la vision du Chef de l'État, Félix-Antoine TSHISEKEDI, dans la marche du pays vers l'émergence et la lutte contre les antivaleurs.",
     subtitle: "",
     author: "GUYLAIN NYEMBO M.",
-    role: "Coordonnateur National",
+    role: "Autorité morale",
     cta: {
       text: "En savoir plus",
       link: "/vision",

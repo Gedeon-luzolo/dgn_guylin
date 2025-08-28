@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils";
 import { NavbarItems } from "@/lib/NavbarItems";
 import flagOverlay from "@/assets/images/flag_overlay.png";
 import logoDgn from "@/assets/images/logo/logo_dgn.png";
+import { Facebook, Instagram, Twitter, Youtube, YoutubeIcon } from "lucide-react";
 
 const NewFooter: React.FC = () => {
   return (
@@ -27,7 +28,7 @@ const NewFooter: React.FC = () => {
           />
         </div>
 
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 z-0">
+        <div className="widthpx mx-auto px-4 sm:px-6 lg:px-8 z-0">
           <div className="bg-white/10 rounded-2xl p-6">
             <div className="grid grid-cols-2 md:grid-cols-5 gap-8 text-white">
               {/* Section Logo et Titre */}
@@ -122,25 +123,25 @@ const NewFooter: React.FC = () => {
                 <h3 className="font-semibold text-sm mb-3">RÉSEAUX SOCIAUX</h3>
                 <ul className="space-y-2 text-sm">
                   <li className="flex items-center">
-                    <span className="mr-2">📘</span>
+                    <Facebook className="mr-2 w-4 h-4" />
                     <a href="#" className="hover:underline text-gray-200">
                       Facebook
                     </a>
                   </li>
                   <li className="flex items-center">
-                    <span className="mr-2">🐦</span>
+                    <Twitter className="mr-2 w-4 h-4"/>
                     <a href="#" className="hover:underline text-gray-200">
                       Twitter
                     </a>
                   </li>
                   <li className="flex items-center">
-                    <span className="mr-2">📷</span>
+                <Instagram className="mr-2 w-4 h-4"/>
                     <a href="#" className="hover:underline text-gray-200">
                       Instagram
                     </a>
                   </li>
                   <li className="flex items-center">
-                    <span className="mr-2">📺</span>
+                 <YoutubeIcon className="mr-2 w-4 h-4"/>
                     <a href="#" className="hover:underline text-gray-200">
                       YouTube
                     </a>

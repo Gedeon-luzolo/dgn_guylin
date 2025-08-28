@@ -184,6 +184,10 @@
     @apply bg-primary/20;
   }
 
+  .widthpx {
+    max-width: 88%;
+  }
+
   /* Animations personnalisées pour le chat premium */
   @keyframes pulse-glow {
     0%,

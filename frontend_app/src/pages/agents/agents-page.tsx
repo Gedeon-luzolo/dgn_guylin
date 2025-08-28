@@ -45,7 +45,7 @@ export function AgentsPage() {
       {/* Flag Overlay */}
       <FlagOverlay className="fixed" />
       {/* Contenu */}
-      <div className="relative z-10 container mx-auto px-4 py-30">
+      <div className="relative z-10 widthpx mx-auto px-4 py-30">
         {/* Bouton retour */}
         <BackButton to="/applications" className="mb-10" />
 
