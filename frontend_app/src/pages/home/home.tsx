@@ -10,7 +10,7 @@ import LoadingSpinner from "@/components/loader/LoadingSpinner";
 import { ArrowRight } from "lucide-react";
 
 export const HomePage = () => {
-  const { width, height } = useResponsiveDimensions(800, 800);
+  const { width, height } = useResponsiveDimensions(700, 600);
 
   const { useList } = useCrud<NewsArticle>({
     endpoint: "/news",
@@ -35,14 +35,21 @@ export const HomePage = () => {
 
           <div className="widthpx mx-auto px-6 md:px-8 relative z-10">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
-
               {/* Section Texte et Statistiques */}
               <div className="space-y-8">
                 {/* Titre principal */}
                 <div className="text-center lg:text-left">
                   <div className="inline-flex items-center px-4 py-2 bg-blue-100 text-blue-700 rounded-full text-sm font-medium mb-6">
-                    <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                      <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                    <svg
+                      className="w-4 h-4 mr-2"
+                      fill="currentColor"
+                      viewBox="0 0 20 20"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     Notre Présence Nationale
                   </div>
@@ -54,7 +61,6 @@ export const HomePage = () => {
                     <br />
                     <span className="text-slate-700">de nos Sièges</span>
                   </h2>
-            
                 </div>
 
                 {/* Compteur et textes alignés au début */}
@@ -68,7 +74,9 @@ export const HomePage = () => {
 
                       {/* Cercle intérieur */}
                       <div className="w-16 h-16 md:w-20 md:h-20 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center border border-white/20">
-                        <span className="text-2xl md:text-3xl font-bold text-white relative z-10">5</span>
+                        <span className="text-2xl md:text-3xl font-bold text-white relative z-10">
+                          5
+                        </span>
                       </div>
 
                       {/* Particules décoratives */}
@@ -78,7 +86,10 @@ export const HomePage = () => {
 
                     {/* Indicateur de progression circulaire */}
                     <div className="absolute -inset-1">
-                      <svg className="w-full h-full -rotate-90" viewBox="0 0 100 100">
+                      <svg
+                        className="w-full h-full -rotate-90"
+                        viewBox="0 0 100 100"
+                      >
                         <circle
                           cx="50"
                           cy="50"
@@ -99,7 +110,13 @@ export const HomePage = () => {
                           className="animate-pulse"
                         />
                         <defs>
-                          <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                          <linearGradient
+                            id="gradient"
+                            x1="0%"
+                            y1="0%"
+                            x2="100%"
+                            y2="100%"
+                          >
                             <stop offset="0%" stopColor="rgb(59 130 246)" />
                             <stop offset="100%" stopColor="rgb(99 102 241)" />
                           </linearGradient>
@@ -123,18 +140,14 @@ export const HomePage = () => {
               {/* Section Carte */}
               <div className="flex justify-center lg:justify-end">
                 <div className="relative">
-             
-
                   {/* Carte à l'air libre */}
                   <div className="relative">
                     <CarteRDC width={width} height={height} />
                   </div>
-
                 </div>
               </div>
             </div>
           </div>
-
         </div>
 
         {/* Section Dernière Actualité */}

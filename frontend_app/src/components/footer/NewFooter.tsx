@@ -129,43 +129,21 @@ const NewFooter: React.FC = () => {
                     </a>
                   </li>
                   <li className="flex items-center">
-                    <Twitter className="mr-2 w-4 h-4"/>
+                    <Twitter className="mr-2 w-4 h-4" />
                     <a href="#" className="hover:underline text-gray-200">
                       Twitter
                     </a>
                   </li>
                   <li className="flex items-center">
-                <Instagram className="mr-2 w-4 h-4"/>
+                    <Instagram className="mr-2 w-4 h-4" />
                     <a href="#" className="hover:underline text-gray-200">
                       Instagram
                     </a>
                   </li>
                   <li className="flex items-center">
-                 <YoutubeIcon className="mr-2 w-4 h-4"/>
+                    <YoutubeIcon className="mr-2 w-4 h-4" />
                     <a href="#" className="hover:underline text-gray-200">
                       YouTube
-                    </a>
-                  </li>
-                </ul>
-              </div>
-
-              {/* Section Mentions Légales */}
-              <div>
-                <h3 className="font-semibold text-sm mb-3">MENTIONS LÉGALES</h3>
-                <ul className="space-y-2 text-sm">
-                  <li>
-                    <a href="#" className="hover:underline text-gray-200">
-                      Mentions légales
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:underline text-gray-200">
-                      Politique de confidentialité
-                    </a>
-                  </li>
-                  <li>
-                    <a href="#" className="hover:underline text-gray-200">
-                      Conditions d'utilisation
                     </a>
                   </li>
                 </ul>

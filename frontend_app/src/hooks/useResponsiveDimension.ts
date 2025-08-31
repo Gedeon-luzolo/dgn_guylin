@@ -22,7 +22,7 @@ export const useResponsiveDimensions = (
         // Ajustement pour mobile
         if (screenWidth < 640) {
           // sm breakpoint
-          newWidth = Math.min(screenWidth - padding, maxWidth * 1.2 );
+          newWidth = Math.min(screenWidth - padding, maxWidth * 1.2);
           newHeight = Math.min(newWidth * 1.1, maxHeight * 1.1);
         }
         // Ajustement pour tablet

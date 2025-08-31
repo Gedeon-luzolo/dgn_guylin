@@ -113,15 +113,15 @@ export const Carousel: React.FC<CarouselProps> = ({
                 x: { type: "spring", stiffness: 300, damping: 30 },
                 opacity: { duration: 0.2 },
               }}
-              className="absolute inset-0 z-50 flex flex-col lg:flex-row items-center justify-center lg:justify-between px-4 md:px-8 lg:px-16 pt-20 md:pt-24 lg:pt-32"
+              className="absolute inset-0 z-50 flex flex-col lg:flex-row items-center justify-center lg:justify-between px-2 md:px-8 lg:px-16 pt-30 md:pt-24 lg:pt-32"
             >
               {/* Contenu textuel */}
-              <div className="w-full lg:w-1/2 text-center lg:text-left space-y-4 md:space-y-6 lg:space-y-8 mb-8 lg:mb-0">
+              <div className="w-full lg:w-1/2 text-center lg:text-left space-y-4 md:space-y-6 lg:space-y-8  lg:mb-0">
                 <motion.h2
                   initial={{ y: 20, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
                   transition={{ delay: 0.2 }}
-                  className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold leading-tight text-white max-w-2xl mx-auto lg:mx-0"
+                  className="text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold leading-tight text-white max-w-2xl mx-auto lg:mx-0"
                 >
                   {slides[currentIndex].title}
                 </motion.h2>
@@ -159,10 +159,10 @@ export const Carousel: React.FC<CarouselProps> = ({
                     className="pt-2 md:pt-4"
                   >
                     <a
-                      href={slides[currentIndex].cta.link}
-                      className="inline-flex items-center space-x-2 rounded-full bg-yellow-400 hover:bg-yellow-300 px-6 md:px-8 py-3 md:py-4 text-sm md:text-base font-semibold text-blue-900 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
+                      href={slides[currentIndex].cta?.link}
+                      className="inline-flex items-center space-x-2 rounded-full bg-yellow-400 hover:bg-yellow-300 px-4 md:px-8 py-1 md:py-4 text-sm md:text-base font-semibold text-blue-900 transition-all duration-300 hover:scale-105 shadow-lg hover:shadow-xl"
                     >
-                      <span>{slides[currentIndex].cta.text}</span>
+                      <span>{slides[currentIndex].cta?.text}</span>
                       <span className="text-lg">→</span>
                     </a>
                   </motion.div>
